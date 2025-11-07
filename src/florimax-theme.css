@@ -1,0 +1,102 @@
+/* ============================================
+   FLORIMAX - TEMA DE FLORISTERÍA
+   ============================================ */
+
+/* Variables de colores */
+:root {
+  --florimax-pink: #FF69B4;
+  --florimax-pink-light: #FFB6C1;
+  --florimax-green: #2E7D32;
+  --florimax-green-light: #81C784;
+  --florimax-lavender: #E6E6FA;
+  --florimax-cream: #FFFAF0;
+  --florimax-text: #2d2d2d;
+}
+
+/* Botones Primarios - Rosa */
+.button-primary {
+  color: rgb(255, 255, 255);
+  background-color: var(--florimax-pink);
+  border: 1px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(255, 105, 180, 0.3);
+  transition: all 0.3s ease;
+}
+
+.button-primary:hover {
+  background-color: #FF1493;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(255, 105, 180, 0.4);
+}
+
+.button-primary:active {
+  background-color: #C71585;
+  transform: translateY(0);
+  box-shadow: 0 2px 5px rgba(255, 105, 180, 0.3);
+}
+
+/* Botones Secundarios - Verde suave */
+.button-secondary {
+  color: var(--florimax-green);
+  background: white;
+  border: 2px solid var(--florimax-green-light);
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(129, 197, 132, 0.2);
+  transition: all 0.3s ease;
+}
+
+.button-secondary:hover {
+  background-color: var(--florimax-lavender);
+  border-color: var(--florimax-green);
+}
+
+.button-secondary:active {
+  background-color: #D4C5F9;
+  box-shadow: none;
+}
+
+/* Links Primarios - Rosa */
+.link-primary {
+  color: var(--florimax-pink);
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.link-primary:hover {
+  color: #FF1493;
+  text-decoration: underline;
+}
+
+.link-primary:active {
+  color: #C71585;
+}
+
+/* Selectores (dropdown) */
+select {
+  color: var(--florimax-text);
+  background-color: white;
+  border: 2px solid var(--florimax-pink-light);
+  border-radius: 8px;
+  padding: 5px 10px;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+select:focus,
+input:focus {
+  outline: 3px solid var(--florimax-pink);
+  border-color: var(--florimax-pink);
+}
+
+select:hover {
+  border-color: var(--florimax-pink);
+}
+
+/* Body */
+body {
+  background-color: var(--florimax-cream);
+  color: var(--florimax-text);
+}
