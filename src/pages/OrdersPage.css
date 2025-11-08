@@ -1,0 +1,237 @@
+.orders-page {
+  max-width: 850px;
+  margin-top: 90px;
+  margin-bottom: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.orders-page .page-title {
+  font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 25px;
+  color: var(--florimax-text);
+}
+
+.orders-page .orders-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  row-gap: 50px;
+}
+
+.orders-page .order-container {
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.orders-page .order-container:hover {
+  box-shadow: 0 6px 16px rgba(255, 105, 180, 0.3);
+  transform: translateY(-2px);
+}
+
+.orders-page .order-header {
+  background: linear-gradient(135deg, var(--florimax-pink-light) 0%, white 100%);
+  border: 2px solid var(--florimax-pink-light);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 25px;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.orders-page .order-header-left-section {
+  display: flex;
+  flex-shrink: 0;
+  gap: 45px;
+}
+
+.orders-page .order-header-label {
+  font-weight: 700;
+  color: var(--florimax-green);
+}
+
+.orders-page .order-date,
+.orders-page .order-total {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.orders-page .order-header-right-section {
+  flex-shrink: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: right;
+}
+
+@media (max-width: 575px) {
+  .orders-page .order-header {
+    flex-direction: column;
+    align-items: start;
+    line-height: 23px;
+    padding: 15px;
+  }
+
+  .orders-page .order-header-left-section {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .orders-page .order-header-label {
+    margin-right: 5px;
+  }
+
+  .orders-page .order-date,
+  .orders-page .order-total {
+    display: grid;
+    grid-template-columns: auto 1fr;
+  }
+
+  .orders-page .order-header-right-section {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    text-align: left;
+  }
+}
+
+.orders-page .order-details-grid {
+  background: white;
+  padding: 40px 25px;
+  border: 2px solid var(--florimax-pink-light);
+  border-top: none;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  display: grid;
+  grid-template-columns: 110px 1fr 220px;
+  column-gap: 35px;
+  row-gap: 60px;
+  align-items: center;
+}
+
+@media (max-width: 800px) {
+  .orders-page .order-details-grid {
+    grid-template-columns: 110px 1fr;
+    row-gap: 0;
+    padding-bottom: 8px;
+  }
+}
+
+@media (max-width: 450px) {
+  .orders-page .order-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.orders-page .product-image-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, var(--florimax-lavender) 0%, white 100%);
+  border-radius: 12px;
+  padding: 15px;
+  height: 110px;
+}
+
+.orders-page .product-image {
+  font-size: 70px;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+}
+
+.orders-page .product-name {
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--florimax-text);
+  font-size: 16px;
+}
+
+.orders-page .product-delivery-date {
+  margin-bottom: 8px;
+  color: var(--florimax-green);
+  font-weight: 600;
+}
+
+.orders-page .product-quantity {
+  margin-bottom: 12px;
+  color: var(--florimax-text);
+}
+
+.orders-page .buy-again-button {
+  font-size: 14px;
+  width: 180px;
+  height: 40px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.orders-page .buy-again-icon {
+  font-size: 18px;
+}
+
+.orders-page .product-actions {
+  align-self: start;
+}
+
+.orders-page .track-package-button {
+  width: 100%;
+  font-size: 14px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+@media (max-width: 800px) {
+  .orders-page .buy-again-button {
+    margin-bottom: 10px;
+  }
+
+  .orders-page .product-actions {
+    grid-column: 2;
+    margin-bottom: 30px;
+  }
+
+  .orders-page .track-package-button {
+    width: 180px;
+  }
+}
+
+@media (max-width: 450px) {
+  .orders-page .product-image-container {
+    text-align: center;
+    margin-bottom: 25px;
+  }
+
+  .orders-page .product-image {
+    font-size: 80px;
+  }
+
+  .orders-page .product-name {
+    margin-bottom: 10px;
+  }
+
+  .orders-page .product-quantity {
+    margin-bottom: 15px;
+  }
+
+  .orders-page .buy-again-button {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .orders-page .product-actions {
+    grid-column: auto;
+    margin-bottom: 70px;
+  }
+
+  .orders-page .track-package-button {
+    width: 100%;
+    padding: 12px;
+  }
+}
