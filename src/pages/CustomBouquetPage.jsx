@@ -1,9 +1,11 @@
 import { useState } from 'react';
+import { useCart } from '../context/CartContext';
 import { Header } from '../components/Header';
 import { availableFlowers, availableAccessories } from '../data/customBouquetData';
 import './CustomBouquetPage.css';
 
 export function CustomBouquetPage() {
+  const { addCustomBouquet } = useCart();
   // Estados para el ramo personalizado
   const [selectedFlowers, setSelectedFlowers] = useState({});
   const [selectedAccessories, setSelectedAccessories] = useState([]);
@@ -54,6 +56,37 @@ export function CustomBouquetPage() {
     });
 
     return total.toFixed(2);
+  };
+
+  // Agregar ramo personalizado al carrito
+  const handleAddToCart = () => {
+    const totalFlowers = getTotalFlowers();
+    
+    if (totalFlowers === 0) {
+      alert('Debes seleccionar al menos una flor para tu ramo');
+      return;
+    }
+
+    // Preparar datos del ramo
+    const bouquetData = {
+      name: bouquetName || 'Ramo Personalizado',
+      totalPrice: calculateTotal(),
+      flowers: selectedFlowers,
+      accessories: selectedAccessories,
+      message: personalMessage
+    };
+
+    // Agregar al carrito
+    addCustomBouquet(bouquetData);
+
+    // Mostrar confirmación
+    alert('¡Ramo agregado al carrito exitosamente! 🌸');
+
+    // Limpiar formulario
+    setSelectedFlowers({});
+    setSelectedAccessories([]);
+    setBouquetName('');
+    setPersonalMessage('');
   };
 
   // Contar total de flores
@@ -242,6 +275,7 @@ export function CustomBouquetPage() {
                 <button 
                   className="add-to-cart-button button-primary"
                   disabled={getTotalFlowers() === 0}
+                  onClick={handleAddToCart}
                 >
                   {getTotalFlowers() === 0 ? 'Selecciona flores' : 'Agregar al Carrito'}
                 </button>
