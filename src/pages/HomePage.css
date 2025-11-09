@@ -119,3 +119,57 @@
   font-size: 15px;
   font-weight: 600;
 }
+
+.home-page .custom-bouquet-banner {
+  background: linear-gradient(135deg, var(--florimax-pink) 0%, var(--florimax-pink-light) 100%);
+  border-radius: 16px;
+  padding: 40px 30px;
+  margin-bottom: 40px;
+  box-shadow: 0 6px 20px rgba(255, 105, 180, 0.4);
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.home-page .banner-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+}
+
+@media (max-width: 768px) {
+  .home-page .banner-content {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.home-page .banner-text h2 {
+  color: white;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.home-page .banner-text p {
+  color: white;
+  font-size: 18px;
+  opacity: 0.95;
+}
+
+.home-page .custom-bouquet-button {
+  padding: 18px 40px;
+  font-size: 18px;
+  font-weight: 700;
+  background-color: white;
+  color: var(--florimax-pink);
+  white-space: nowrap;
+  border: 3px solid white;
+}
+
+.home-page .custom-bouquet-button:hover {
+  background-color: var(--florimax-green);
+  color: white;
+  border-color: var(--florimax-green);
+}
