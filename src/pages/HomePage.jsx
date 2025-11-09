@@ -1,7 +1,42 @@
+import { useState } from 'react';
 import { Header } from '../components/Header';
+import { useCart } from '../context/CartContext';
+import { products } from '../data/products';
 import './HomePage.css';
 
 export function HomePage() {
+  const { addToCart } = useCart();
+  const [addedProducts, setAddedProducts] = useState({});
+  const [quantities, setQuantities] = useState({});
+
+  // Manejar cambio de cantidad
+  const handleQuantityChange = (productId, value) => {
+    setQuantities({
+      ...quantities,
+      [productId]: parseInt(value)
+    });
+  };
+
+  // Agregar al carrito
+  const handleAddToCart = (product) => {
+    const quantity = quantities[product.id] || 1;
+    addToCart(product, quantity);
+    
+    // Mostrar mensaje "Agregado"
+    setAddedProducts({
+      ...addedProducts,
+      [product.id]: true
+    });
+
+    // Ocultar mensaje después de 2 segundos
+    setTimeout(() => {
+      setAddedProducts({
+        ...addedProducts,
+        [product.id]: false
+      });
+    }, 2000);
+  };
+
   return (
     <>
       <title>FLORIMAX - Floristería Online</title>
@@ -9,6 +44,7 @@ export function HomePage() {
       <Header />
 
       <div className="home-page">
+        {/* Banner de Personalización */}
         <div className="custom-bouquet-banner">
           <div className="banner-content">
             <div className="banner-text">
@@ -22,178 +58,60 @@ export function HomePage() {
             </a>
           </div>
         </div>
+
         <div className="products-grid">
-          {/* Producto 1 - Rosas Rojas */}
-          <div className="product-container">
-            <div className="product-image-container">
-              <div className="product-image-placeholder">🌹</div>
-            </div>
-
-            <div className="product-name limit-text-to-2-lines">
-              Ramo de 12 Rosas Rojas Premium
-            </div>
-
-            <div className="product-rating-container">
-              <div className="product-rating-stars">⭐⭐⭐⭐⭐</div>
-              <div className="product-rating-count link-primary">
-                156
+          {products.map(product => (
+            <div key={product.id} className="product-container">
+              <div className="product-image-container">
+                <div className="product-image-placeholder">{product.emoji}</div>
               </div>
-            </div>
 
-            <div className="product-price">
-              $45.99
-            </div>
-
-            <div className="product-quantity-container">
-              <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-
-            <div className="product-spacer"></div>
-
-            <div className="added-to-cart">
-              <span>✓</span>
-              Agregado
-            </div>
-
-            <button className="add-to-cart-button button-primary">
-              Agregar al Carrito
-            </button>
-          </div>
-
-          {/* Producto 2 - Girasoles */}
-          <div className="product-container">
-            <div className="product-image-container">
-              <div className="product-image-placeholder">🌻</div>
-            </div>
-
-            <div className="product-name limit-text-to-2-lines">
-              Ramo de Girasoles Frescos
-            </div>
-
-            <div className="product-rating-container">
-              <div className="product-rating-stars">⭐⭐⭐⭐⭐</div>
-              <div className="product-rating-count link-primary">
-                89
+              <div className="product-name limit-text-to-2-lines">
+                {product.name}
               </div>
-            </div>
 
-            <div className="product-price">
-              $32.50
-            </div>
-
-            <div className="product-quantity-container">
-              <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-
-            <div className="product-spacer"></div>
-
-            <div className="added-to-cart">
-              <span>✓</span>
-              Agregado
-            </div>
-
-            <button className="add-to-cart-button button-primary">
-              Agregar al Carrito
-            </button>
-          </div>
-
-          {/* Producto 3 - Tulipanes */}
-          <div className="product-container">
-            <div className="product-image-container">
-              <div className="product-image-placeholder">🌷</div>
-            </div>
-
-            <div className="product-name limit-text-to-2-lines">
-              Ramo de Tulipanes Multicolor - 15 Unidades
-            </div>
-
-            <div className="product-rating-container">
-              <div className="product-rating-stars">⭐⭐⭐⭐</div>
-              <div className="product-rating-count link-primary">
-                127
+              <div className="product-rating-container">
+                <div className="product-rating-stars">⭐⭐⭐⭐⭐</div>
+                <div className="product-rating-count link-primary">
+                  {product.reviews}
+                </div>
               </div>
-            </div>
 
-            <div className="product-price">
-              $38.99
-            </div>
-
-            <div className="product-quantity-container">
-              <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-
-            <div className="product-spacer"></div>
-
-            <div className="added-to-cart">
-              <span>✓</span>
-              Agregado
-            </div>
-
-            <button className="add-to-cart-button button-primary">
-              Agregar al Carrito
-            </button>
-          </div>
-
-          {/* Producto 4 - Orquídeas */}
-          <div className="product-container">
-            <div className="product-image-container">
-              <div className="product-image-placeholder">🌺</div>
-            </div>
-
-            <div className="product-name limit-text-to-2-lines">
-              Orquídea Phalaenopsis en Maceta
-            </div>
-
-            <div className="product-rating-container">
-              <div className="product-rating-stars">⭐⭐⭐⭐⭐</div>
-              <div className="product-rating-count link-primary">
-                203
+              <div className="product-price">
+                ${product.price.toFixed(2)}
               </div>
+
+              <div className="product-quantity-container">
+                <select 
+                  value={quantities[product.id] || 1}
+                  onChange={(e) => handleQuantityChange(product.id, e.target.value)}
+                >
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+
+              <div className="product-spacer"></div>
+
+              <div 
+                className="added-to-cart"
+                style={{ opacity: addedProducts[product.id] ? 1 : 0 }}
+              >
+                <span>✓</span>
+                Agregado
+              </div>
+
+              <button 
+                className="add-to-cart-button button-primary"
+                onClick={() => handleAddToCart(product)}
+              >
+                Agregar al Carrito
+              </button>
             </div>
-
-            <div className="product-price">
-              $52.00
-            </div>
-
-            <div className="product-quantity-container">
-              <select>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-              </select>
-            </div>
-
-            <div className="product-spacer"></div>
-
-            <div className="added-to-cart">
-              <span>✓</span>
-              Agregado
-            </div>
-
-            <button className="add-to-cart-button button-primary">
-              Agregar al Carrito
-            </button>
-          </div>
+          ))}
         </div>
       </div>
     </>

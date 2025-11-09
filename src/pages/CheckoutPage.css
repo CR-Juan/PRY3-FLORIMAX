@@ -206,3 +206,31 @@
   font-size: 16px;
   font-weight: 700;
 }
+
+/* Carrito vacío */
+.checkout-page .empty-cart {
+  text-align: center;
+  padding: 80px 20px;
+  background: white;
+  border: 2px solid var(--florimax-pink-light);
+  border-radius: 12px;
+  margin: 40px auto;
+  max-width: 600px;
+}
+
+.checkout-page .empty-cart-icon {
+  font-size: 100px;
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.checkout-page .empty-cart h2 {
+  color: var(--florimax-text);
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.checkout-page .empty-cart p {
+  color: #666;
+  font-size: 18px;
+}
