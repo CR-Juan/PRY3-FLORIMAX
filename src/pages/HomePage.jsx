@@ -9,6 +9,19 @@ export function HomePage() {
       <Header />
 
       <div className="home-page">
+        <div className="custom-bouquet-banner">
+          <div className="banner-content">
+            <div className="banner-text">
+              <h2>✨ Crea tu Ramo Personalizado ✨</h2>
+              <p>Elige tus flores favoritas, agrega accesorios y crea un ramo único y especial</p>
+            </div>
+            <a href="/custom-bouquet">
+              <button className="custom-bouquet-button button-primary">
+                🌸 Personalizar mi Ramo 🌸
+              </button>
+            </a>
+          </div>
+        </div>
         <div className="products-grid">
           {/* Producto 1 - Rosas Rojas */}
           <div className="product-container">

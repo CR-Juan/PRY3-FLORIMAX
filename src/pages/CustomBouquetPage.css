@@ -1,0 +1,419 @@
+.custom-bouquet-page {
+  margin-top: 80px;
+  padding: 30px 20px;
+  background-color: var(--florimax-cream);
+  min-height: calc(100vh - 80px);
+}
+
+.custom-bouquet-page .page-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.custom-bouquet-page .page-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--florimax-green);
+  margin-bottom: 10px;
+}
+
+.custom-bouquet-page .page-subtitle {
+  font-size: 18px;
+  color: var(--florimax-text);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.custom-bouquet-page .bouquet-builder-grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 30px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+@media (max-width: 1200px) {
+  .custom-bouquet-page .bouquet-builder-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Panel de Selección */
+.custom-bouquet-page .selection-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.custom-bouquet-page .section {
+  background: white;
+  border: 2px solid var(--florimax-pink-light);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
+}
+
+.custom-bouquet-page .section-title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--florimax-green);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Grid de Flores */
+.custom-bouquet-page .flowers-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.custom-bouquet-page .flower-card {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border: 2px solid var(--florimax-lavender);
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--florimax-lavender) 0%, white 100%);
+  transition: all 0.3s ease;
+}
+
+.custom-bouquet-page .flower-card:hover {
+  border-color: var(--florimax-pink);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+}
+
+.custom-bouquet-page .flower-emoji {
+  font-size: 50px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.custom-bouquet-page .flower-info {
+  flex: 1;
+}
+
+.custom-bouquet-page .flower-name {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--florimax-text);
+  margin-bottom: 4px;
+}
+
+.custom-bouquet-page .flower-description {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 6px;
+}
+
+.custom-bouquet-page .flower-price {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--florimax-green);
+}
+
+.custom-bouquet-page .flower-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.custom-bouquet-page .qty-button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: var(--florimax-pink);
+  color: white;
+  border: none;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.custom-bouquet-page .qty-button:hover {
+  background-color: #FF1493;
+  transform: scale(1.1);
+}
+
+.custom-bouquet-page .qty-button:active {
+  transform: scale(0.95);
+}
+
+.custom-bouquet-page .qty-display {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--florimax-text);
+  min-width: 30px;
+  text-align: center;
+}
+
+/* Grid de Accesorios */
+.custom-bouquet-page .accessories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.custom-bouquet-page .accessory-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 2px solid var(--florimax-lavender);
+  border-radius: 10px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.custom-bouquet-page .accessory-card:hover {
+  border-color: var(--florimax-pink);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(255, 105, 180, 0.3);
+}
+
+.custom-bouquet-page .accessory-card.selected {
+  border-color: var(--florimax-pink);
+  background: linear-gradient(135deg, var(--florimax-pink-light) 0%, white 100%);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+}
+
+.custom-bouquet-page .accessory-emoji {
+  font-size: 50px;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.custom-bouquet-page .accessory-info {
+  text-align: center;
+}
+
+.custom-bouquet-page .accessory-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--florimax-text);
+  margin-bottom: 4px;
+}
+
+.custom-bouquet-page .accessory-description {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.custom-bouquet-page .accessory-price {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--florimax-green);
+}
+
+.custom-bouquet-page .selected-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: var(--florimax-green);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* Formulario de Personalización */
+.custom-bouquet-page .personalization-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.custom-bouquet-page .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-bouquet-page .form-group label {
+  font-weight: 600;
+  color: var(--florimax-text);
+  font-size: 15px;
+}
+
+.custom-bouquet-page .form-group input,
+.custom-bouquet-page .form-group textarea {
+  padding: 12px;
+  border: 2px solid var(--florimax-pink-light);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: Roboto, Arial;
+  transition: all 0.3s ease;
+}
+
+.custom-bouquet-page .form-group input:focus,
+.custom-bouquet-page .form-group textarea:focus {
+  outline: none;
+  border-color: var(--florimax-pink);
+  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
+}
+
+.custom-bouquet-page .form-group textarea {
+  resize: vertical;
+}
+
+/* Panel de Vista Previa */
+.custom-bouquet-page .preview-panel {
+  position: relative;
+}
+
+.custom-bouquet-page .preview-sticky {
+  position: sticky;
+  top: 90px;
+  background: white;
+  border: 2px solid var(--florimax-pink-light);
+  border-radius: 12px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+}
+
+.custom-bouquet-page .preview-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--florimax-green);
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.custom-bouquet-page .preview-container {
+  min-height: 300px;
+  max-height: 500px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+  padding: 15px;
+  background: var(--florimax-cream);
+  border-radius: 8px;
+}
+
+.custom-bouquet-page .empty-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  color: #999;
+}
+
+.custom-bouquet-page .empty-icon {
+  font-size: 80px;
+  margin-bottom: 15px;
+  opacity: 0.5;
+}
+
+.custom-bouquet-page .preview-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--florimax-pink-light);
+}
+
+.custom-bouquet-page .preview-section:last-child {
+  border-bottom: none;
+}
+
+.custom-bouquet-page .preview-section h3 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--florimax-green);
+  margin-bottom: 12px;
+}
+
+.custom-bouquet-page .preview-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.custom-bouquet-page .preview-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  background: white;
+  border-radius: 6px;
+}
+
+.custom-bouquet-page .preview-emoji {
+  font-size: 24px;
+}
+
+.custom-bouquet-page .preview-text {
+  flex: 1;
+  font-size: 14px;
+  color: var(--florimax-text);
+}
+
+.custom-bouquet-page .preview-price {
+  font-weight: 700;
+  color: var(--florimax-green);
+  font-size: 14px;
+}
+
+.custom-bouquet-page .preview-detail {
+  padding: 10px;
+  background: white;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: var(--florimax-text);
+}
+
+.custom-bouquet-page .preview-detail strong {
+  color: var(--florimax-green);
+}
+
+.custom-bouquet-page .preview-footer {
+  border-top: 2px solid var(--florimax-pink);
+  padding-top: 20px;
+}
+
+.custom-bouquet-page .total-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.custom-bouquet-page .total-price span:first-child {
+  color: var(--florimax-text);
+}
+
+.custom-bouquet-page .price-amount {
+  color: var(--florimax-green);
+  font-size: 28px;
+}
+
+.custom-bouquet-page .add-to-cart-button {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.custom-bouquet-page .add-to-cart-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.custom-bouquet-page .add-to-cart-button:disabled:hover {
+  background-color: #ccc;
+  transform: none;
+}
