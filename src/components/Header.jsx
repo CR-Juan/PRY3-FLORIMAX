@@ -1,7 +1,10 @@
 import { Link } from 'react-router';
+import { useCart } from '../context/CartContext';
 import './header.css';
 
 export function Header() {
+  const { getTotalItems } = useCart();
+  
   return (
     <div className="header">
       <div className="left-section">
@@ -29,7 +32,7 @@ export function Header() {
         
         <Link className="cart-link header-link" to="/checkout">
           <span className="cart-icon">🛒</span>
-          <div className="cart-quantity">0</div>
+          <div className="cart-quantity">{getTotalItems()}</div>
           <div className="cart-text">Carrito</div>
         </Link>
       </div>
