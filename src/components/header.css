@@ -165,3 +165,66 @@
   justify-content: center;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.header .user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.header .user-icon {
+  font-size: 20px;
+}
+
+.header .user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.header .logout-button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 6px 12px;
+}
+
+.header .auth-link {
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 6px 12px;
+}
+
+.header .auth-text {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.header .register-link {
+  background-color: var(--florimax-pink);
+  border-radius: 8px;
+}
+
+.header .register-link:hover {
+  background-color: #FF1493;
+}
+
+@media (max-width: 900px) {
+  .header .user-name {
+    display: none;
+  }
+  
+  .header .auth-text {
+    font-size: 12px;
+  }
+}
