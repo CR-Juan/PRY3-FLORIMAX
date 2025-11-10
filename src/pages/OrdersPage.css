@@ -13,6 +13,7 @@
   font-size: 28px;
   margin-bottom: 25px;
   color: var(--florimax-text);
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .orders-page .orders-grid {
@@ -26,11 +27,16 @@
   border-radius: 12px;
   overflow: hidden;
   transition: all 0.3s ease;
+  animation: fadeInUp 0.6s ease-out backwards;
 }
 
+.orders-page .order-container:nth-child(1) { animation-delay: 0.1s; }
+.orders-page .order-container:nth-child(2) { animation-delay: 0.2s; }
+.orders-page .order-container:nth-child(3) { animation-delay: 0.3s; }
+
 .orders-page .order-container:hover {
-  box-shadow: 0 6px 16px rgba(255, 105, 180, 0.3);
-  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+  transform: translateY(-4px);
 }
 
 .orders-page .order-header {
@@ -141,6 +147,11 @@
 .orders-page .product-image {
   font-size: 70px;
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.1));
+  transition: all 0.3s ease;
+}
+
+.orders-page .order-details-grid:hover .product-image {
+  transform: scale(1.1);
 }
 
 .orders-page .product-name {
@@ -170,6 +181,16 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.orders-page .buy-again-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
+}
+
+.orders-page .buy-again-button:active {
+  transform: scale(0.95);
 }
 
 .orders-page .buy-again-icon {
@@ -185,6 +206,15 @@
   font-size: 14px;
   padding: 10px;
   border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.orders-page .track-package-button:hover {
+  transform: translateY(-2px);
+}
+
+.orders-page .track-package-button:active {
+  transform: scale(0.95);
 }
 
 @media (max-width: 800px) {
