@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { Header } from '../components/Header';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { products } from '../data/products';
+import { Alert } from '../components/Alert';
 import './HomePage.css';
 
 export function HomePage() {
   const { addToCart } = useCart();
   const [addedProducts, setAddedProducts] = useState({});
   const [quantities, setQuantities] = useState({});
+  const [alertMessage, setAlertMessage] = useState("");
+
+  const { currentUser } = useAuth(); // ⚡ currentUser
+  
 
   // Manejar cambio de cantidad
   const handleQuantityChange = (productId, value) => {
@@ -19,16 +25,19 @@ export function HomePage() {
 
   // Agregar al carrito
   const handleAddToCart = (product) => {
+    if (!currentUser) {
+      setAlertMessage("Debe iniciar sesión para agregar productos al carrito");
+      return;
+    }
+
     const quantity = quantities[product.id] || 1;
     addToCart(product, quantity);
-    
-    // Mostrar mensaje "Agregado"
+
     setAddedProducts({
       ...addedProducts,
       [product.id]: true
     });
 
-    // Ocultar mensaje después de 2 segundos
     setTimeout(() => {
       setAddedProducts({
         ...addedProducts,
@@ -42,6 +51,17 @@ export function HomePage() {
       <title>FLORIMAX - Floristería Online</title>
 
       <Header />
+
+      {/* Alerta automática 5 segundos */}
+      {alertMessage && (
+        <Alert
+          type="warning"
+          message={alertMessage}
+          autoClose={true}
+          duration={5000}
+          onClose={() => setAlertMessage("")}
+        />
+      )}
 
       <div className="home-page">
         {/* Banner de Personalización */}
@@ -63,7 +83,11 @@ export function HomePage() {
           {products.map(product => (
             <div key={product.id} className="product-container">
               <div className="product-image-container">
-                <div className="product-image-placeholder">{product.emoji}</div>
+                <img 
+                  src={product.image}
+                  alt={product.name}
+                  className="product-image"
+                />
               </div>
 
               <div className="product-name limit-text-to-2-lines">
@@ -78,7 +102,7 @@ export function HomePage() {
               </div>
 
               <div className="product-price">
-                ${product.price.toFixed(2)}
+                ₡{product.price.toFixed(2)}
               </div>
 
               <div className="product-quantity-container">

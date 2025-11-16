@@ -30,6 +30,10 @@ export function LoginPage() {
   return (
     <div className="auth-page">
       <div className="auth-container">
+        {/*Puse el estilo en el jxs de una vez aquí, porque no encontré el de LoginPage */}
+        <button className="login-close-button" onClick={() => navigate('/')} >
+          𝗫
+        </button>
         <div className="auth-header">
           <a href="/" className="auth-logo">FLORIMAX</a>
           <h1 className="auth-title">Iniciar Sesión</h1>

@@ -120,7 +120,7 @@ export function CustomBouquetPage() {
                     <div className="flower-info">
                       <div className="flower-name">{flower.name}</div>
                       <div className="flower-description">{flower.description}</div>
-                      <div className="flower-price">${flower.price.toFixed(2)} c/u</div>
+                      <div className="flower-price">₡{flower.price.toFixed(2)} c/u</div>
                     </div>
                     <div className="flower-controls">
                       <button 
@@ -156,7 +156,7 @@ export function CustomBouquetPage() {
                     <div className="accessory-info">
                       <div className="accessory-name">{accessory.name}</div>
                       <div className="accessory-description">{accessory.description}</div>
-                      <div className="accessory-price">${accessory.price.toFixed(2)}</div>
+                      <div className="accessory-price">₡{accessory.price.toFixed(2)}</div>
                     </div>
                     {selectedAccessories.includes(accessory.id) && (
                       <div className="selected-badge">✓</div>
@@ -219,7 +219,7 @@ export function CustomBouquetPage() {
                               <div key={flowerId} className="preview-item">
                                 <span className="preview-emoji">{flower.emoji}</span>
                                 <span className="preview-text">{flower.name} x{quantity}</span>
-                                <span className="preview-price">${(flower.price * quantity).toFixed(2)}</span>
+                                <span className="preview-price">₡{(flower.price * quantity).toFixed(2)}</span>
                               </div>
                             );
                           })}
@@ -238,7 +238,7 @@ export function CustomBouquetPage() {
                               <div key={accessoryId} className="preview-item">
                                 <span className="preview-emoji">{accessory.emoji}</span>
                                 <span className="preview-text">{accessory.name}</span>
-                                <span className="preview-price">${accessory.price.toFixed(2)}</span>
+                                <span className="preview-price">₡{accessory.price.toFixed(2)}</span>
                               </div>
                             );
                           })}
@@ -270,7 +270,7 @@ export function CustomBouquetPage() {
               <div className="preview-footer">
                 <div className="total-price">
                   <span>Total:</span>
-                  <span className="price-amount">${calculateTotal()}</span>
+                  <span className="price-amount">₡{calculateTotal()}</span>
                 </div>
                 <button 
                   className="add-to-cart-button button-primary"

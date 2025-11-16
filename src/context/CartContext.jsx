@@ -94,17 +94,17 @@ export function CartProvider({ children }) {
   // Calcular costo de envío
   const getShippingCost = () => {
     const subtotal = getSubtotal();
-    if (subtotal >= 50) {
+    if (subtotal >= 10000) {
       return 0; // Envío gratis si el subtotal es mayor a $50
     }
-    return 4.99;
+    return 2500;
   };
 
   // Calcular impuestos (13% - Costa Rica)
   const getTax = () => {
     const subtotal = getSubtotal();
-    const shipping = getShippingCost();
-    return (subtotal + shipping) * 0.13;
+    //const shipping = getShippingCost();
+    return (subtotal) * 0.13;
   };
 
   // Obtener total final (con impuestos y envío)

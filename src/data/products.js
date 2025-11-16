@@ -1,53 +1,53 @@
 export const products = [
   {
     id: 'roses-red-premium',
-    name: 'Ramo de 12 Rosas Rojas Premium',
-    emoji: '🌹',
-    price: 45.99,
-    rating: 4.5,
-    reviews: 156,
-    description: 'Hermosas rosas rojas importadas'
+    name: 'Ramo de 12 Rosas Rojas',
+    image: '../ramo_rosas.png',
+    price: 9000,
+    rating: 0,
+    reviews: 0,
+    description: 'Hermosas rosas rojas'
   },
   {
     id: 'sunflowers-fresh',
-    name: 'Ramo de Girasoles Frescos',
-    emoji: '🌻',
-    price: 32.50,
-    rating: 4.5,
-    reviews: 89,
+    name: 'Ramo de 6 Girasoles Frescos',
+    image: '../ramo_girasol.png',
+    price: 7500,
+    rating: 0,
+    reviews: 0,
     description: 'Girasoles frescos y brillantes'
   },
   {
-    id: 'tulips-multicolor',
-    name: 'Ramo de Tulipanes Multicolor - 15 Unidades',
-    emoji: '🌷',
-    price: 38.99,
-    rating: 4.0,
-    reviews: 127,
-    description: 'Tulipanes en colores variados'
+    id: 'carnations-pinks',
+    name: 'Ramo de 6 Claves con Relleno',
+    image: '../ramo_claveles.png',
+    price: 8500,
+    rating: 0,
+    reviews: 0,
+    description: 'Hermosos claveles rosados'
   },
   {
-    id: 'orchid-phalaenopsis',
-    name: 'Orquídea Phalaenopsis en Maceta',
-    emoji: '🌺',
-    price: 52.00,
-    rating: 5.0,
-    reviews: 203,
-    description: 'Orquídea elegante en maceta decorativa'
+    id: 'ramo-primaveral',
+    name: 'Ramo Primaveral con 6 Flores',
+    image: '../ramo_primaveral.png',
+    price: 6000,
+    rating: 0,
+    reviews: 0,
+    description: 'Ramo primaveral con una variedad de flores'
   },
   {
-    id: 'lilies-white',
-    name: 'Ramo de Lirios Blancos - 6 Tallos',
-    emoji: '🪷',
-    price: 41.50,
-    rating: 4.8,
-    reviews: 142,
-    description: 'Lirios blancos símbolo de pureza'
+    id: 'gerberas-six',
+    name: 'Ramo de 6 Gerberas',
+    image: '../ramo_gerberas.png',
+    price: 6500,
+    rating: 0,
+    reviews: 0,
+    description: 'Ramo de gerberas multicolor'
   },
   {
     id: 'carnations-pink',
     name: 'Ramo de Claveles Rosados - 20 Unidades',
-    emoji: '🌸',
+    image: '🌸',
     price: 28.99,
     rating: 4.3,
     reviews: 98,
@@ -56,7 +56,7 @@ export const products = [
   {
     id: 'daisies-mixed',
     name: 'Ramo de Margaritas Mixtas',
-    emoji: '🌼',
+    image: '🌼',
     price: 24.50,
     rating: 4.6,
     reviews: 176,
@@ -65,7 +65,7 @@ export const products = [
   {
     id: 'roses-pink-romantic',
     name: 'Ramo Romántico de Rosas Rosadas',
-    emoji: '🌹',
+    image: '🌹',
     price: 39.99,
     rating: 4.7,
     reviews: 189,
@@ -74,7 +74,7 @@ export const products = [
   {
     id: 'hibiscus-tropical',
     name: 'Arreglo Tropical de Hibiscos',
-    emoji: '🌺',
+    image: '🌺',
     price: 48.00,
     rating: 4.9,
     reviews: 87,
@@ -83,7 +83,7 @@ export const products = [
   {
     id: 'lavender-bouquet',
     name: 'Ramo de Lavanda Natural',
-    emoji: '🪻',
+    image: '🪻',
     price: 35.50,
     rating: 4.4,
     reviews: 134,
@@ -92,7 +92,7 @@ export const products = [
   {
     id: 'mixed-spring',
     name: 'Ramo Primavera Mix - Flores Variadas',
-    emoji: '💐',
+    image: '💐',
     price: 44.99,
     rating: 4.8,
     reviews: 221,
@@ -101,7 +101,7 @@ export const products = [
   {
     id: 'roses-white-elegant',
     name: 'Ramo Elegante de Rosas Blancas',
-    emoji: '🤍',
+    image: '🤍',
     price: 47.50,
     rating: 5.0,
     reviews: 167,

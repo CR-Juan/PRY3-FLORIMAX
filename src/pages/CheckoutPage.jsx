@@ -64,16 +64,16 @@ export function CheckoutPage() {
 
                   <div className="cart-item-details-grid">
                     <div className="product-image-container">
-                      <div className="product-image">{item.emoji}</div>
+                      <img 
+                        src={item.image} 
+                        alt={item.name} 
+                        className="product-image"
+                      />
                     </div>
 
                     <div className="cart-item-details">
-                      <div className="product-name">
-                        {item.name}
-                      </div>
-                      <div className="product-price">
-                        ${item.price.toFixed(2)}
-                      </div>
+                      <div className="product-name">{item.name}</div>
+                      <div className="product-price">₡{item.price.toFixed(2)}</div>
                       <div className="product-quantity">
                         <span>
                           Cantidad: <span className="quantity-label">{item.quantity}</span>
@@ -107,12 +107,8 @@ export function CheckoutPage() {
                           className="delivery-option-input"
                           name={`delivery-option-${item.id}`} />
                         <div>
-                          <div className="delivery-option-date">
-                            Martes, 15 de Junio
-                          </div>
-                          <div className="delivery-option-price">
-                            Envío GRATIS
-                          </div>
+                          <div className="delivery-option-date">Martes, 15 de Junio</div>
+                          <div className="delivery-option-price">Envío GRATIS</div>
                         </div>
                       </div>
                       <div className="delivery-option">
@@ -120,12 +116,8 @@ export function CheckoutPage() {
                           className="delivery-option-input"
                           name={`delivery-option-${item.id}`} />
                         <div>
-                          <div className="delivery-option-date">
-                            Jueves, 10 de Junio
-                          </div>
-                          <div className="delivery-option-price">
-                            $4.99 - Envío Express
-                          </div>
+                          <div className="delivery-option-date">Jueves, 10 de Junio</div>
+                          <div className="delivery-option-price">₡2500 - Envío Express</div>
                         </div>
                       </div>
                     </div>
@@ -136,42 +128,38 @@ export function CheckoutPage() {
 
             {/* Resumen de pago */}
             <div className="payment-summary">
-              <div className="payment-summary-title">
-                Resumen de Pago
-              </div>
+              <div className="payment-summary-title">Resumen de Pago</div>
 
               <div className="payment-summary-row">
                 <div>Items ({getTotalItems()}):</div>
-                <div className="payment-summary-money">${getSubtotal().toFixed(2)}</div>
+                <div className="payment-summary-money">₡{getSubtotal().toFixed(2)}</div>
               </div>
 
               <div className="payment-summary-row">
                 <div>Envío:</div>
                 <div className="payment-summary-money">
-                  {getShippingCost() === 0 ? 'GRATIS' : `$${getShippingCost().toFixed(2)}`}
+                  {getShippingCost() === 0 ? 'GRATIS' : `₡${getShippingCost().toFixed(2)}`}
                 </div>
               </div>
 
               <div className="payment-summary-row subtotal-row">
                 <div>Total antes de impuestos:</div>
                 <div className="payment-summary-money">
-                  ${(getSubtotal() + getShippingCost()).toFixed(2)}
+                  ₡{(getSubtotal() + getShippingCost()).toFixed(2)}
                 </div>
               </div>
 
               <div className="payment-summary-row">
                 <div>IVA estimado (13%):</div>
-                <div className="payment-summary-money">${getTax().toFixed(2)}</div>
+                <div className="payment-summary-money">₡{getTax().toFixed(2)}</div>
               </div>
 
               <div className="payment-summary-row total-row">
                 <div>Total del pedido:</div>
-                <div className="payment-summary-money">${getFinalTotal().toFixed(2)}</div>
+                <div className="payment-summary-money">₡{getFinalTotal().toFixed(2)}</div>
               </div>
 
-              <button className="place-order-button button-primary">
-                Realizar Pedido
-              </button>
+              <button className="place-order-button button-primary">Realizar Pedido</button>
             </div>
           </div>
         )}
