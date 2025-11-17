@@ -4,6 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import './AuthPages.css';
 
 export function RegisterPage() {
+
+  function capitalizeWords(str) {
+    return str
+      .toLowerCase()
+      .split(" ")
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,6 +23,7 @@ export function RegisterPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -32,8 +42,15 @@ export function RegisterPage() {
     setIsLoading(true);
 
     try {
-      await register({ name, email, password });
+      await register({ 
+        name: capitalizeWords(name), 
+        email, 
+        password,
+        accountType: "user"
+      });
+
       navigate('/'); // Redirigir al home después de registro exitoso
+      
     } catch (err) {
       setError(err.message);
     } finally {
@@ -44,6 +61,12 @@ export function RegisterPage() {
   return (
     <div className="auth-page">
       <div className="auth-container">
+
+        {/*Puse el estilo en el jxs de una vez aquí, porque no encontré el de LoginPage */}
+        <button className="register-close-button" onClick={() => navigate('/')} >
+          𝗫
+        </button>
+
         <div className="auth-header">
           <a href="/" className="auth-logo">FLORIMAX</a>
           <h1 className="auth-title">Crear Cuenta</h1>

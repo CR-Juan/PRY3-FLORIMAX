@@ -13,6 +13,7 @@
   height: 60px;
   z-index: 100;
   box-shadow: 0 2px 8px rgba(46, 125, 50, 0.3);
+  flex-wrap: wrap; 
 }
 
 .header .left-section {
@@ -109,7 +110,7 @@
 }
 
 .header .right-section {
-  width: 220px;
+  width: auto;
   flex-shrink: 0;
   display: flex;
   justify-content: end;
@@ -156,7 +157,7 @@
   font-weight: 700;
   position: absolute;
   top: 4px;
-  right: 42px;
+  right: 0px;
   width: 22px;
   height: 22px;
   border-radius: 50%;
@@ -171,8 +172,15 @@
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
+  background-color: transparent;
+  transition: background 0.2s ease; 
+  cursor: pointer;
+}
+
+.header .user-info:hover {
+  border: 2px solid white; 
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .header .user-icon {
@@ -216,7 +224,11 @@
 }
 
 .header .register-link:hover {
-  background-color: #FF1493;
+  background-color: rgb(25, 135, 84);;
+}
+
+.user-info:hover .user-name {
+  color: var(--florimax-pink);
 }
 
 @media (max-width: 900px) {

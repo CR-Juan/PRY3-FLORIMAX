@@ -1,3 +1,7 @@
+/* =========================================
+   PÁGINA GENERAL
+========================================= */
+
 .custom-bouquet-page {
   margin-top: 80px;
   padding: 30px 20px;
@@ -8,7 +12,7 @@
 .custom-bouquet-page .page-header {
   text-align: center;
   margin-bottom: 40px;
-  animation: fadeInUp 0.6s ease-out; /* AGREGAR */
+  animation: fadeInUp 0.6s ease-out;
 }
 
 .custom-bouquet-page .page-title {
@@ -39,7 +43,10 @@
   }
 }
 
-/* Panel de Selección */
+/* =========================================
+   PANEL IZQUIERDO - SECCIONES
+========================================= */
+
 .custom-bouquet-page .selection-panel {
   display: flex;
   flex-direction: column;
@@ -52,12 +59,8 @@
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 2px 8px rgba(255, 182, 193, 0.2);
-  animation: fadeInUp 0.6s ease-out backwards; /* AGREGAR */
+  animation: fadeInUp 0.6s ease-out backwards;
 }
-
-.custom-bouquet-page .section:nth-child(1) { animation-delay: 0.1s; }
-.custom-bouquet-page .section:nth-child(2) { animation-delay: 0.2s; }
-.custom-bouquet-page .section:nth-child(3) { animation-delay: 0.3s; }
 
 .custom-bouquet-page .section-title {
   font-size: 24px;
@@ -69,7 +72,10 @@
   gap: 10px;
 }
 
-/* Grid de Flores */
+/* =========================================
+   FLORES (SELECCIÓN)
+========================================= */
+
 .custom-bouquet-page .flowers-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -88,31 +94,21 @@
   animation: fadeInUp 0.4s ease-out backwards;
 }
 
-.custom-bouquet-page .flower-card:nth-child(1) { animation-delay: 0.05s; }
-.custom-bouquet-page .flower-card:nth-child(2) { animation-delay: 0.1s; }
-.custom-bouquet-page .flower-card:nth-child(3) { animation-delay: 0.15s; }
-.custom-bouquet-page .flower-card:nth-child(4) { animation-delay: 0.2s; }
-.custom-bouquet-page .flower-card:nth-child(5) { animation-delay: 0.25s; }
-.custom-bouquet-page .flower-card:nth-child(6) { animation-delay: 0.3s; }
-.custom-bouquet-page .flower-card:nth-child(7) { animation-delay: 0.35s; }
-.custom-bouquet-page .flower-card:nth-child(8) { animation-delay: 0.4s; }
-
 .custom-bouquet-page .flower-card:hover {
   border-color: var(--florimax-pink);
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(255, 105, 180, 0.3);
 }
 
-.custom-bouquet-page .flower-emoji {
-  font-size: 50px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-  transition: all 0.3s ease; /* AGREGAR */
+/* --- NUEVO: IMÁGENES PEQUEÑAS --- */
+.custom-bouquet-page .flower-image {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  display: block;
 }
 
-.custom-bouquet-page .flower-card:hover .flower-emoji {
-  transform: scale(1.2) rotate(10deg);
-}
-
+/* INFO FLORES */
 .custom-bouquet-page .flower-info {
   flex: 1;
 }
@@ -135,6 +131,10 @@
   font-weight: 700;
   color: var(--florimax-green);
 }
+
+/* =========================================
+   CONTROLES DE CANTIDAD
+========================================= */
 
 .custom-bouquet-page .flower-controls {
   display: flex;
@@ -160,12 +160,6 @@
   transform: scale(1.1);
 }
 
-.custom-bouquet-page .qty-button:active {
-  transform: scale(0.95);
-  transform: scale(0.85);
-  animation: pulse 0.3s ease;
-}
-
 .custom-bouquet-page .qty-display {
   font-size: 18px;
   font-weight: 700;
@@ -174,7 +168,10 @@
   text-align: center;
 }
 
-/* Grid de Accesorios */
+/* =========================================
+   ACCESORIOS
+========================================= */
+
 .custom-bouquet-page .accessories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -195,14 +192,6 @@
   animation: scaleIn 0.4s ease-out backwards;
 }
 
-.custom-bouquet-page .accessory-card:nth-child(1) { animation-delay: 0.1s; }
-.custom-bouquet-page .accessory-card:nth-child(2) { animation-delay: 0.15s; }
-.custom-bouquet-page .accessory-card:nth-child(3) { animation-delay: 0.2s; }
-.custom-bouquet-page .accessory-card:nth-child(4) { animation-delay: 0.25s; }
-.custom-bouquet-page .accessory-card:nth-child(5) { animation-delay: 0.3s; }
-.custom-bouquet-page .accessory-card:nth-child(6) { animation-delay: 0.35s; }
-.custom-bouquet-page .accessory-card:nth-child(7) { animation-delay: 0.4s; }
-
 .custom-bouquet-page .accessory-card:hover {
   border-color: var(--florimax-pink);
   transform: translateY(-3px);
@@ -215,17 +204,16 @@
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
-.custom-bouquet-page .accessory-emoji {
-  font-size: 50px;
-  margin-bottom: 10px;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
-  transition: all 0.3s ease;
+/* --- NUEVO: IMÁGENES PEQUEÑAS --- */
+.custom-bouquet-page .accessory-image {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 8px;
 }
 
-.custom-bouquet-page .accessory-card:hover .accessory-emoji {
-  transform: scale(1.15) rotate(-5deg);
-}
-
+/* INFO */
 .custom-bouquet-page .accessory-info {
   text-align: center;
 }
@@ -266,7 +254,10 @@
   animation: scaleIn 0.3s ease-out;
 }
 
-/* Formulario de Personalización */
+/* =========================================
+   FORMULARIO
+========================================= */
+
 .custom-bouquet-page .personalization-form {
   display: flex;
   flex-direction: column;
@@ -279,12 +270,6 @@
   gap: 8px;
 }
 
-.custom-bouquet-page .form-group label {
-  font-weight: 600;
-  color: var(--florimax-text);
-  font-size: 15px;
-}
-
 .custom-bouquet-page .form-group input,
 .custom-bouquet-page .form-group textarea {
   padding: 12px;
@@ -292,21 +277,12 @@
   border-radius: 8px;
   font-size: 15px;
   font-family: Roboto, Arial;
-  transition: all 0.3s ease;
 }
 
-.custom-bouquet-page .form-group input:focus,
-.custom-bouquet-page .form-group textarea:focus {
-  outline: none;
-  border-color: var(--florimax-pink);
-  box-shadow: 0 0 0 3px rgba(255, 105, 180, 0.1);
-}
+/* =========================================
+   VISTA PREVIA (PANEL DERECHO)
+========================================= */
 
-.custom-bouquet-page .form-group textarea {
-  resize: vertical;
-}
-
-/* Panel de Vista Previa */
 .custom-bouquet-page .preview-panel {
   position: relative;
 }
@@ -319,7 +295,6 @@
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
-  animation: fadeInUp 0.6s ease-out 0.2s backwards; 
 }
 
 .custom-bouquet-page .preview-title {
@@ -331,7 +306,6 @@
 }
 
 .custom-bouquet-page .preview-container {
-  min-height: 300px;
   max-height: 500px;
   overflow-y: auto;
   margin-bottom: 20px;
@@ -340,42 +314,12 @@
   border-radius: 8px;
 }
 
-.custom-bouquet-page .empty-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 300px;
-  color: #999;
-}
-
-.custom-bouquet-page .empty-icon {
-  font-size: 80px;
-  margin-bottom: 15px;
-  opacity: 0.5;
-}
-
-.custom-bouquet-page .preview-section {
-  margin-bottom: 20px;
-  padding-bottom: 15px;
-  border-bottom: 2px solid var(--florimax-pink-light);
-}
-
-.custom-bouquet-page .preview-section:last-child {
-  border-bottom: none;
-}
-
-.custom-bouquet-page .preview-section h3 {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--florimax-green);
-  margin-bottom: 12px;
-}
-
-.custom-bouquet-page .preview-items {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+/* --- NUEVO: IMÁGENES PEQUEÑAS EN PREVIEW --- */
+.custom-bouquet-page .preview-image {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .custom-bouquet-page .preview-item {
@@ -385,10 +329,6 @@
   padding: 8px;
   background: white;
   border-radius: 6px;
-}
-
-.custom-bouquet-page .preview-emoji {
-  font-size: 24px;
 }
 
 .custom-bouquet-page .preview-text {
@@ -403,18 +343,9 @@
   font-size: 14px;
 }
 
-.custom-bouquet-page .preview-detail {
-  padding: 10px;
-  background: white;
-  border-radius: 6px;
-  margin-bottom: 8px;
-  font-size: 14px;
-  color: var(--florimax-text);
-}
-
-.custom-bouquet-page .preview-detail strong {
-  color: var(--florimax-green);
-}
+/* =========================================
+   FOOTER DEL PANEL
+========================================= */
 
 .custom-bouquet-page .preview-footer {
   border-top: 2px solid var(--florimax-pink);
@@ -424,14 +355,8 @@
 .custom-bouquet-page .total-price {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
   font-size: 20px;
   font-weight: 700;
-}
-
-.custom-bouquet-page .total-price span:first-child {
-  color: var(--florimax-text);
 }
 
 .custom-bouquet-page .price-amount {
@@ -446,13 +371,50 @@
   font-weight: 700;
 }
 
-.custom-bouquet-page .add-to-cart-button:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
-  opacity: 0.6;
+/* ===============================
+   🌿 RAMO REALISTA (3 CAPAS)
+================================*/
+
+.preview-bouquet {
+  position: relative;
+  width: 270px;
+  height: 270px;
+  margin: 0 auto 20px auto;
 }
 
-.custom-bouquet-page .add-to-cart-button:disabled:hover {
-  background-color: #ccc;
-  transform: none;
+/* Capa del fondo (relleno) */
+.bouquet-fill {
+  position: absolute;
+  width: 85px;
+  height: 85px;
+  opacity: 0.7;
+  filter: blur(1px);
+  transform-origin: center;
+}
+
+/* Capa media (flores medianas) */
+.bouquet-flower-mid {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  transform-origin: center;
+  opacity: 0.95;
+  transition: transform 0.2s ease;
+}
+
+/* Capa frontal (flores grandes) */
+.bouquet-flower-front {
+  position: absolute;
+  width: 70px;
+  height: 70px;
+  object-fit: contain;
+  transform-origin: center;
+  transition: transform 0.2s ease;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
+}
+
+.bouquet-flower-mid:hover,
+.bouquet-flower-front:hover {
+  transform: scale(1.2) rotate(4deg);
 }

@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react';
+import { users as defaultUsers } from "../data/users";
 
 // Crear el contexto
 const AuthContext = createContext();
@@ -19,18 +20,24 @@ export function AuthProvider({ children }) {
 
   // Cargar usuario desde localStorage al iniciar
   useEffect(() => {
-    const storedUser = localStorage.getItem('florimax_user');
-    if (storedUser) {
-      setCurrentUser(JSON.parse(storedUser));
-    }
-    setIsLoading(false);
-  }, []);
+
+  const storedUsers = localStorage.getItem("florimax_users");
+
+  // Si no existe lista en localStorage, cargar la lista default
+  if (!storedUsers) {
+    localStorage.setItem("florimax_users", JSON.stringify(defaultUsers));
+  }
+
+  const storedUser = localStorage.getItem("florimax_user");
+  if (storedUser) {
+    setCurrentUser(JSON.parse(storedUser));
+  }
+
+  setIsLoading(false);
+}, []);
 
   // Registrar nuevo usuario
   const register = (userData) => {
-    // En producción, esto haría una llamada a tu backend
-    // Por ahora, simulamos el registro
-    
     // Obtener usuarios existentes
     const existingUsers = JSON.parse(localStorage.getItem('florimax_users') || '[]');
     
@@ -43,6 +50,7 @@ export function AuthProvider({ children }) {
     // Crear nuevo usuario
     const newUser = {
       id: Date.now().toString(),
+      accountType: "user",          // Solo las cuentas de cliente se pueden crear desde
       name: userData.name,
       email: userData.email,
       password: userData.password, // En producción, esto estaría hasheado
@@ -57,7 +65,8 @@ export function AuthProvider({ children }) {
     const userSession = {
       id: newUser.id,
       name: newUser.name,
-      email: newUser.email
+      email: newUser.email,
+      accountType: newUser.accountType 
     };
 
     setCurrentUser(userSession);
@@ -68,32 +77,45 @@ export function AuthProvider({ children }) {
 
   // Iniciar sesión
   const login = (email, password) => {
-    // En producción, esto haría una llamada a tu backend
-    // Por ahora, verificamos contra localStorage
-    
-    const existingUsers = JSON.parse(localStorage.getItem('florimax_users') || '[]');
-    
-    // Buscar usuario
-    const user = existingUsers.find(
-      u => u.email === email && u.password === password
-    );
+  // Normalizar email para evitar problemas
+  const normalizedEmail = email.trim().toLowerCase();
 
-    if (!user) {
-      throw new Error('Correo o contraseña incorrectos');
-    }
+  // 1. Obtener usuarios guardados
+  let existingUsers = JSON.parse(localStorage.getItem('florimax_users'));
 
-    // Crear sesión
-    const userSession = {
-      id: user.id,
-      name: user.name,
-      email: user.email
-    };
+  // 2. Si no existen o están vacíos → usar usuarios del archivo
+  if (!existingUsers || existingUsers.length === 0) {
+    existingUsers = defaultUsers;
+    localStorage.setItem('florimax_users', JSON.stringify(defaultUsers));
+  }
 
-    setCurrentUser(userSession);
-    localStorage.setItem('florimax_user', JSON.stringify(userSession));
+  // 3. Buscar correo EXACTO sin importar mayúsculas
+  const userByEmail = existingUsers.find(
+    u => u.email.trim().toLowerCase() === normalizedEmail
+  );
 
-    return userSession;
+  if (!userByEmail) {
+    throw new Error("Este correo no está registrado");
+  }
+
+  // 4. Validar contraseña
+  if (userByEmail.password !== password) {
+    throw new Error("Contraseña incorrecta");
+  }
+
+  // 5. Crear sesión
+  const userSession = {
+    id: userByEmail.id,
+    name: userByEmail.name,
+    email: userByEmail.email,
+    accountType: userByEmail.accountType
   };
+
+  setCurrentUser(userSession);
+  localStorage.setItem('florimax_user', JSON.stringify(userSession));
+
+  return userSession;
+};
 
   // Cerrar sesión
   const logout = () => {
