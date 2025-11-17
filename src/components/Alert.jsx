@@ -6,7 +6,7 @@ export function Alert({
   message, 
   onClose, 
   children, 
-  autoClose = false, // ⚡ Si true, se cierra automáticamente
+  autoClose = false, // Si true, se cierra automáticamente
   duration = 5000,   // duración de la alerta automática en ms
   className = "" 
 }) {

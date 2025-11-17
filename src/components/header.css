@@ -172,8 +172,15 @@
   align-items: center;
   gap: 8px;
   padding: 6px 12px;
-  background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
+  background-color: transparent;
+  transition: background 0.2s ease; 
+  cursor: pointer;
+}
+
+.header .user-info:hover {
+  border: 2px solid white; 
+  background-color: rgba(255, 255, 255, 0.15);
 }
 
 .header .user-icon {
@@ -218,6 +225,10 @@
 
 .header .register-link:hover {
   background-color: rgb(25, 135, 84);;
+}
+
+.user-info:hover .user-name {
+  color: var(--florimax-pink);
 }
 
 @media (max-width: 900px) {

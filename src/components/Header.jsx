@@ -38,10 +38,10 @@ export function Header() {
       <div className="right-section">
         {currentUser ? (
           <>
-            <div className="user-info">
+            <Link className="user-info" to="/edit-profile" style={{ textDecoration: 'none'}}>
               <span className="user-icon">👤</span>
               <span className="user-name">{currentUser.name}</span>
-            </div>
+            </Link>
             <button
               className="logout-button header-link"
               onClick={handleLogoutClick}
@@ -61,16 +61,17 @@ export function Header() {
         )}
 
         {currentUser && (
-          <Link className="orders-link header-link" to="/orders">
-            <span className="orders-text">Mis Pedidos</span>
+          <>
+            <Link className="orders-link header-link" to="/orders">
+              <span className="orders-text">Mis Pedidos</span>
+            </Link>
+            <Link className="cart-link header-link" to="/checkout">
+              <div className="cart-text">Carrito</div>
+              <div className="cart-quantity">{getTotalItems()}</div>
+              <span className="cart-icon">🛒</span>
           </Link>
+        </>
         )}
-
-        <Link className="cart-link header-link" to="/checkout">
-          <div className="cart-text">Carrito</div>
-          <div className="cart-quantity">{getTotalItems()}</div>
-          <span className="cart-icon">🛒</span>
-        </Link>
       </div>
 
       {/* Alerta interactiva logout */}
