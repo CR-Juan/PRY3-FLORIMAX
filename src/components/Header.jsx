@@ -38,10 +38,16 @@ export function Header() {
       <div className="right-section">
         {currentUser ? (
           <>
-            <Link className="user-info" to="/edit-profile" style={{ textDecoration: 'none'}}>
+            {/* BOTÓN DE USUARIO → EDITAR PERFIL */}
+            <Link 
+              className="user-info" 
+              to="/edit-profile"
+              style={{ textDecoration: 'none' }}
+            >
               <span className="user-icon">👤</span>
               <span className="user-name">{currentUser.name}</span>
             </Link>
+
             <button
               className="logout-button header-link"
               onClick={handleLogoutClick}

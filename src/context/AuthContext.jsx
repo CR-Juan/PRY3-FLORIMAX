@@ -123,6 +123,28 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('florimax_user');
   };
 
+  // 🔹 Actualizar datos del usuario (EDIT PROFILE)
+  const updateUser = (updatedData) => {
+    if (!currentUser) return;
+
+    // 1) Actualizar lista de usuarios
+    const users = JSON.parse(localStorage.getItem("florimax_users")) || [];
+
+    const updatedUsers = users.map((user) =>
+      user.id === currentUser.id
+        ? { ...user, ...updatedData }
+        : user
+    );
+
+    localStorage.setItem("florimax_users", JSON.stringify(updatedUsers));
+
+    // 2) Actualizar la sesión actual
+    const updatedSession = { ...currentUser, ...updatedData };
+
+    setCurrentUser(updatedSession);
+    localStorage.setItem("florimax_user", JSON.stringify(updatedSession));
+  };
+
   // Verificar si está autenticado
   const isAuthenticated = () => {
     return currentUser !== null;
@@ -134,7 +156,8 @@ export function AuthProvider({ children }) {
     register,
     login,
     logout,
-    isAuthenticated
+    isAuthenticated,
+    updateUser, // 👈 agregado aquí
   };
 
   return (
@@ -143,3 +166,4 @@ export function AuthProvider({ children }) {
     </AuthContext.Provider>
   );
 }
+
