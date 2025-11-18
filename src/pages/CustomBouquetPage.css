@@ -100,7 +100,6 @@
   box-shadow: 0 6px 16px rgba(255, 105, 180, 0.3);
 }
 
-/* --- NUEVO: IMÁGENES PEQUEÑAS --- */
 .custom-bouquet-page .flower-image {
   width: 55px;
   height: 55px;
@@ -108,7 +107,6 @@
   display: block;
 }
 
-/* INFO FLORES */
 .custom-bouquet-page .flower-info {
   flex: 1;
 }
@@ -204,7 +202,6 @@
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.3);
 }
 
-/* --- NUEVO: IMÁGENES PEQUEÑAS --- */
 .custom-bouquet-page .accessory-image {
   width: 50px;
   height: 50px;
@@ -213,7 +210,6 @@
   margin-bottom: 8px;
 }
 
-/* INFO */
 .custom-bouquet-page .accessory-info {
   text-align: center;
 }
@@ -287,39 +283,84 @@
   position: relative;
 }
 
+/* La tarjeta "pegajosa" */
 .custom-bouquet-page .preview-sticky {
   position: sticky;
   top: 90px;
   background: white;
   border: 2px solid var(--florimax-pink-light);
   border-radius: 12px;
-  padding: 25px;
   box-shadow: 0 4px 12px rgba(255, 105, 180, 0.2);
+  /* overflow: hidden; es importante para que los bordes redondeados se apliquen
+     a los hijos (como el footer) */
+  overflow: hidden;
 }
 
+/* Título ("Vista Previa") */
 .custom-bouquet-page .preview-title {
   font-size: 22px;
   font-weight: 700;
   color: var(--florimax-green);
-  margin-bottom: 20px;
+  margin: 0;
+  padding: 25px 25px 20px 25px; /* Ajuste del padding original */
   text-align: center;
+  border-bottom: 2px solid var(--florimax-pink-light);
 }
 
+/* Contenedor del contenido (lienzo y listas) */
 .custom-bouquet-page .preview-container {
   max-height: 500px;
   overflow-y: auto;
-  margin-bottom: 20px;
-  padding: 15px;
+  padding: 20px; /* Espacio interno */
   background: var(--florimax-cream);
-  border-radius: 8px;
 }
 
-/* --- NUEVO: IMÁGENES PEQUEÑAS EN PREVIEW --- */
-.custom-bouquet-page .preview-image {
-  width: 35px;
-  height: 35px;
+/* =========================================
+   🌿 LIENZO DEL RAMO
+========================================= */
+
+.bouquet-visualization-canvas {
+  width: 100%;
+  height: 250px;
+  position: relative; /* ¡CRUCIAL! */
+  overflow: hidden; /* ¡CRUCIAL! */
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 16px;
+  border: 1px dashed var(--florimax-pink);
+}
+
+/* Flores individuales dentro del lienzo */
+.bouquet-flower-image {
+  position: absolute; /* ¡CRUCIAL! */
+  height: auto;
   object-fit: contain;
-  flex-shrink: 0;
+  /* width, top, left, y transform se aplican desde React */
+}
+
+/* Accesorios (envoltorio) dentro del lienzo */
+.bouquet-accessory-image {
+  object-fit: contain;
+  /* position, bottom, left, etc. se aplican desde React */
+}
+
+/* =========================================
+   LISTAS DE DETALLE (EN VISTA PREVIA)
+========================================= */
+
+.custom-bouquet-page .preview-section {
+  margin-bottom: 16px;
+  background: var(--color-white);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--florimax-pink-light);
+}
+
+.custom-bouquet-page .preview-section h3 {
+  font-size: 1.1em;
+  color: var(--florimax-green); /* Usando tu variable */
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 .custom-bouquet-page .preview-item {
@@ -329,6 +370,14 @@
   padding: 8px;
   background: white;
   border-radius: 6px;
+  margin-bottom: 5px; /* Añadido para separar items */
+}
+
+.custom-bouquet-page .preview-image {
+  width: 35px;
+  height: 35px;
+  object-fit: contain;
+  flex-shrink: 0;
 }
 
 .custom-bouquet-page .preview-text {
@@ -343,20 +392,29 @@
   font-size: 14px;
 }
 
+.custom-bouquet-page .preview-detail {
+  font-size: 14px;
+  color: var(--florimax-text);
+  padding: 5px 0;
+}
+
 /* =========================================
    FOOTER DEL PANEL
 ========================================= */
 
 .custom-bouquet-page .preview-footer {
   border-top: 2px solid var(--florimax-pink);
-  padding-top: 20px;
+  padding: 20px 25px 25px 25px; /* Alineado con padding original */
+  background: white; /* Añadido para consistencia */
 }
 
 .custom-bouquet-page .total-price {
   display: flex;
   justify-content: space-between;
+  align-items: center; /* Alinea verticalmente */
   font-size: 20px;
   font-weight: 700;
+  margin-bottom: 15px; /* Espacio antes del botón */
 }
 
 .custom-bouquet-page .price-amount {
@@ -369,52 +427,46 @@
   padding: 15px;
   font-size: 16px;
   font-weight: 700;
+  /* Asumiendo que tienes una clase base .button-primary */
+  background-color: var(--florimax-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-/* ===============================
-   🌿 RAMO REALISTA (3 CAPAS)
-================================*/
-
-.preview-bouquet {
-  position: relative;
-  width: 270px;
-  height: 270px;
-  margin: 0 auto 20px auto;
+.custom-bouquet-page .add-to-cart-button:hover {
+  background-color: #004d40; /* Un verde más oscuro */
 }
 
-/* Capa del fondo (relleno) */
-.bouquet-fill {
-  position: absolute;
-  width: 85px;
-  height: 85px;
-  opacity: 0.7;
-  filter: blur(1px);
-  transform-origin: center;
+.custom-bouquet-page .add-to-cart-button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
-/* Capa media (flores medianas) */
-.bouquet-flower-mid {
-  position: absolute;
-  width: 55px;
-  height: 55px;
-  object-fit: contain;
-  transform-origin: center;
-  opacity: 0.95;
-  transition: transform 0.2s ease;
+/* =========================================
+   ANIMACIONES
+========================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Capa frontal (flores grandes) */
-.bouquet-flower-front {
-  position: absolute;
-  width: 70px;
-  height: 70px;
-  object-fit: contain;
-  transform-origin: center;
-  transition: transform 0.2s ease;
-  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.3));
-}
-
-.bouquet-flower-mid:hover,
-.bouquet-flower-front:hover {
-  transform: scale(1.2) rotate(4deg);
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
