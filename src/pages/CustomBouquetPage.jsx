@@ -48,7 +48,7 @@ export function CustomBouquetPage() {
   // Calcular total
   const calculateTotal = () => {
     let total = 0;
-    
+
     // Flores
     Object.keys(selectedFlowers).forEach(flowerId => {
       const flower = availableFlowers.find(f => f.id === flowerId);
@@ -105,13 +105,12 @@ export function CustomBouquetPage() {
       <Header />
 
       {alertData && (
-      <Alert 
-        type={alertData.type}
-        message={alertData.message}
-        autoClose={true}
-      />
-    )}
-
+        <Alert
+          type={alertData.type}
+          message={alertData.message}
+          autoClose={true}
+        />
+      )}
 
       <div className="custom-bouquet-page">
         <div className="page-header">
@@ -120,7 +119,7 @@ export function CustomBouquetPage() {
         </div>
 
         <div className="bouquet-builder-grid">
-          
+
           {/* PANEL IZQUIERDO */}
           <div className="selection-panel">
 
@@ -130,8 +129,8 @@ export function CustomBouquetPage() {
               <div className="flowers-grid">
                 {availableFlowers.map(flower => (
                   <div key={flower.id} className="flower-card">
-                    
-                    <img 
+
+                    <img
                       src={flower.image}
                       alt={flower.name}
                       className="flower-image"
@@ -144,7 +143,7 @@ export function CustomBouquetPage() {
                     </div>
 
                     <div className="flower-controls">
-                      <button 
+                      <button
                         className="qty-button"
                         onClick={() => updateFlowerQuantity(flower.id, (selectedFlowers[flower.id] || 0) - 1)}
                       >
@@ -155,7 +154,7 @@ export function CustomBouquetPage() {
                         {selectedFlowers[flower.id] || 0}
                       </span>
 
-                      <button 
+                      <button
                         className="qty-button"
                         onClick={() => updateFlowerQuantity(flower.id, (selectedFlowers[flower.id] || 0) + 1)}
                       >
@@ -170,16 +169,16 @@ export function CustomBouquetPage() {
             {/* ACCESORIOS */}
             <div className="section">
               <h2 className="section-title">Agrega Accesorios</h2>
-              
+
               <div className="accessories-grid">
                 {availableAccessories.map(accessory => (
-                  <div 
+                  <div
                     key={accessory.id}
                     className={`accessory-card ${selectedAccessories.includes(accessory.id) ? 'selected' : ''}`}
                     onClick={() => toggleAccessory(accessory.id)}
                   >
-                    
-                    <img 
+
+                    <img
                       src={accessory.image}
                       alt={accessory.name}
                       className="accessory-image"
@@ -206,7 +205,7 @@ export function CustomBouquetPage() {
               <div className="personalization-form">
                 <div className="form-group">
                   <label>Nombre del Ramo (opcional)</label>
-                  <input 
+                  <input
                     type="text"
                     placeholder='Ej: "Ramo de Aniversario"'
                     value={bouquetName}
@@ -217,7 +216,7 @@ export function CustomBouquetPage() {
 
                 <div className="form-group">
                   <label>Mensaje Personalizado (opcional)</label>
-                  <textarea 
+                  <textarea
                     placeholder='Ej: "Feliz cumpleaños", "Te amo mamá"'
                     value={personalMessage}
                     onChange={(e) => setPersonalMessage(e.target.value)}
@@ -232,7 +231,6 @@ export function CustomBouquetPage() {
           {/* PANEL DERECHO - PREVIEW */}
           <div className="preview-panel">
             <div className="preview-sticky">
-              
               <h2 className="preview-title">Vista Previa</h2>
 
               <div className="preview-container">
@@ -243,50 +241,134 @@ export function CustomBouquetPage() {
                   </div>
                 ) : (
                   <>
-                    {/* FLORES */}
-                    {Object.keys(selectedFlowers).length > 0 && (
-                      <div className="preview-section">
-                        <h3>Flores ({getTotalFlowers()})</h3>
+                    {/* === CANVAS DEL RAMO === */}
+                    {getTotalFlowers() > 0 && (
+                      <div className="bouquet-visualization-canvas">
 
-                        <div className="preview-items">
-                          {Object.keys(selectedFlowers).map(flowerId => {
-                            const flower = availableFlowers.find(f => f.id === flowerId);
-                            const quantity = selectedFlowers[flowerId];
+                        {/* === FLORES (RAMO COMPACTO) === */}
+                        <div className="bouquet-flowers-cluster">
+                          {(() => {
+                            const flowerElements = [];
+                            const total = getTotalFlowers();
+                            if (total === 0) return [];
 
-                            return (
-                              <div key={flowerId} className="preview-item">
-                                <img 
+                            const centerY = 55;
+
+                            // 🔥 Radio dinámico: más flores → ramo más abierto
+                            const minRadius = 65;
+                            const radius = minRadius + total * 4; 
+                            // Ej: 5 flores = 85px | 20 flores = 145px
+
+                            // Construir lista lineal de flores
+                            const flatFlowers = [];
+                            Object.keys(selectedFlowers).forEach(flowerId => {
+                              const flower = availableFlowers.find(f => f.id === flowerId);
+                              const quantity = selectedFlowers[flowerId];
+                              for (let i = 0; i < quantity; i++) flatFlowers.push(flower);
+                            });
+
+                            // Ángulos del semicírculo (primer + segundo cuadrante)
+                            const maxAngle = Math.PI / 2;   // +90°
+                            const minAngle = -Math.PI / 2;  // -90°
+
+                            // PRIMERA flor al centro (0°)
+                            const angles = [0];
+
+                            const remaining = total - 1;
+
+                            if (remaining > 0) {
+                              // 🔥 Más flores → más separación angular
+                              const angleStep = (maxAngle - minAngle) / (remaining + 1);
+
+                              for (let i = 1; i <= remaining; i++) {
+                                const angle = maxAngle - angleStep * i;
+
+                                // Alternar izquierda/derecha para simetría perfecta
+                                angles.push(i % 2 === 0 ? angle : -angle);
+                              }
+                            }
+
+                            // Renderizar flores
+                            flatFlowers.forEach((flower, index) => {
+                              const angle = angles[index];
+
+                              const x = Math.cos(angle) * radius;
+                              const y = Math.sin(angle) * radius * 0.45;
+
+                              const rotation = angle * (180 / Math.PI);
+
+                              flowerElements.push(
+                                <img
+                                  key={`${flower.id}-${index}`}
                                   src={flower.image}
-                                  alt={flower.name}
-                                  className="preview-image"
+                                  className="bouquet-flower-image"
+                                  style={{
+                                    position: "absolute",
+                                    left: `calc(50% + ${x}px)`,
+                                    top: `calc(${centerY + y}px)`,
+                                    width: "65px",
+                                    transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                                    zIndex: 200 - index,
+                                    filter: "drop-shadow(1.5px 1.5px 3px rgba(0,0,0,0.25))",
+                                  }}
                                 />
-                                <span className="preview-text">{flower.name} x{quantity}</span>
-                                <span className="preview-price">₡{(flower.price * quantity).toFixed(2)}</span>
-                              </div>
-                            );
-                          })}
+                              );
+                            });
+
+                            return flowerElements;
+                          })()}
+
+
+
                         </div>
+
+                        {/* ACCESORIOS (envoltorio y cinta) */}
+                        {selectedAccessories.map(accessoryId => {
+                          const accessory = availableAccessories.find(a => a.id === accessoryId);
+                          if (!accessory) return null;
+
+                          const isWrap = accessory.name.includes("Papel");
+                          const isBow = accessory.name.includes("Cinta");
+
+                          return (
+                            <img
+                              key={accessory.id}
+                              src={accessory.image}
+                              alt=""
+                              className="bouquet-accessory-image"
+                              style={{
+                                position: "absolute",
+                                bottom: isWrap ? 0 : "10%",
+                                left: "50%",
+                                transform: "translateX(-50%)",
+                                width: isWrap ? "100%" : "80px",
+                                zIndex: isWrap ? 1 : 300,
+                                opacity: isWrap ? 0.9 : 1,
+                              }}
+                            />
+                          );
+                        })}
                       </div>
                     )}
 
-                    {/* ACCESORIOS */}
+                    {/* LISTA DE ACCESORIOS */}
                     {selectedAccessories.length > 0 && (
                       <div className="preview-section">
                         <h3>Accesorios ({selectedAccessories.length})</h3>
-
                         <div className="preview-items">
                           {selectedAccessories.map(accessoryId => {
                             const accessory = availableAccessories.find(a => a.id === accessoryId);
-
                             return (
                               <div key={accessoryId} className="preview-item">
-                                <img 
+                                <img
                                   src={accessory.image}
                                   alt={accessory.name}
                                   className="preview-image"
                                 />
                                 <span className="preview-text">{accessory.name}</span>
-                                <span className="preview-price">₡{accessory.price.toFixed(2)}</span>
+                                <span className="preview-price">
+                                  ₡{accessory.price.toFixed(2)}
+                                </span>
                               </div>
                             );
                           })}
@@ -298,13 +380,11 @@ export function CustomBouquetPage() {
                     {(bouquetName || personalMessage) && (
                       <div className="preview-section">
                         <h3>Personalización</h3>
-
                         {bouquetName && (
                           <div className="preview-detail">
                             <strong>Nombre:</strong> {bouquetName}
                           </div>
                         )}
-
                         {personalMessage && (
                           <div className="preview-detail">
                             <strong>Mensaje:</strong> {personalMessage}
@@ -316,25 +396,25 @@ export function CustomBouquetPage() {
                 )}
               </div>
 
-              {/* TOTAL */}
+              {/* FOOTER */}
               <div className="preview-footer">
                 <div className="total-price">
                   <span>Total:</span>
                   <span className="price-amount">₡{calculateTotal()}</span>
                 </div>
 
-                <button 
+                <button
                   className="add-to-cart-button button-primary"
                   disabled={getTotalFlowers() === 0}
                   onClick={handleAddToCart}
                 >
-                  {getTotalFlowers() === 0 ? 'Selecciona flores' : 'Agregar al Carrito'}
+                  {getTotalFlowers() === 0
+                    ? "Selecciona flores"
+                    : "Agregar al Carrito"}
                 </button>
               </div>
-
             </div>
           </div>
-
         </div>
       </div>
     </>
