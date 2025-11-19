@@ -74,7 +74,10 @@
 .home-page .product-container:hover .product-image {
   transform: scale(1.1) rotate(5deg);
   filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+  object-fit: contain;
+  background-color: transparent;
 }
+
 
 .home-page .product-name {
   height: 40px;
