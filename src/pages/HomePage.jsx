@@ -71,11 +71,19 @@ export function HomePage() {
               <h2>✨ Crea tu Ramo Personalizado ✨</h2>
               <p>Elige tus flores favoritas, agrega accesorios y crea un ramo único y especial</p>
             </div>
-            <a href="/custom-bouquet">
-              <button className="custom-bouquet-button button-primary">
-                🌸 Personalizar mi Ramo 🌸
-              </button>
-            </a>
+
+            <button
+              className="custom-bouquet-button button-primary"
+              onClick={() => {
+                if (!currentUser) {
+                  setAlertMessage("Debe iniciar sesión para personalizar un ramo");
+                  return;
+                }
+                window.location.href = "/custom-bouquet";
+              }}
+            >
+              🌸 Personalizar mi Ramo 🌸
+            </button>
           </div>
         </div>
 

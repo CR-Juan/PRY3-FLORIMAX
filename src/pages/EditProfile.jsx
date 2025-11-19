@@ -16,7 +16,6 @@ export function EditProfile() {
   const [name, setName] = useState(currentUser.name);
   const [email, setEmail] = useState(currentUser.email);
 
-  // 🔥 refs: NO producen re-render → no pierdes focus
   const currentPassRef = useRef("");
   const newPassRef = useRef("");
   const confirmPassRef = useRef("");
@@ -64,7 +63,6 @@ export function EditProfile() {
       setEditEmail(false);
       setEditPassword(false);
 
-      // 🔥 limpiar refs correctamente
       if (currentPassRef.current) currentPassRef.current.value = "";
       if (newPassRef.current) newPassRef.current.value = "";
       if (confirmPassRef.current) confirmPassRef.current.value = "";
@@ -121,223 +119,227 @@ export function EditProfile() {
   );
 
   return (
-    <div className="auth-page" style={{ paddingTop: "40px" }}>
-      <div className="auth-container" style={{ maxWidth: "430px", marginTop: "20px" }}>
+    <>
+      <title>FLORIMAX - Actualizar Información</title>
 
-        <button
-          onClick={() => navigate('/')}
-          style={{
-            position: 'absolute',
-            top: '20px',
-            right: '25px',
-            fontSize: '26px',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
-            color: '#444',
-            fontWeight: 'bold'
-          }}
-        >
-          𝗫
-        </button>
+      <div className="auth-page" style={{ paddingTop: "40px" }}>
+        <div className="auth-container" style={{ maxWidth: "430px", marginTop: "20px" }}>
 
-        <div style={{ textAlign: "center", marginBottom: "25px" }}>
-          <h1 style={{ fontSize: "28px" }}>Mi Perfil</h1>
-          <p style={{ color: "#777" }}>Gestiona tu información</p>
-        </div>
-
-        {error && (
-          <div style={{
-            background: "#ffe1e1",
-            border: "1px solid #ffb3b3",
-            padding: "10px",
-            borderRadius: "8px",
-            marginBottom: "10px",
-            color: "#b30000"
-          }}>
-            {error}
-          </div>
-        )}
-
-        {success && (
-          <div style={{
-            background: "#e6ffe6",
-            border: "1px solid #b3ffb3",
-            padding: "10px",
-            borderRadius: "8px",
-            marginBottom: "10px",
-            color: "#1b7a1b"
-          }}>
-            {success}
-          </div>
-        )}
-
-        <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
-
-          {/* NOMBRE */}
-          <Card
-            title="Nombre"
-            editing={editName}
-            value={name}
-            onEditClick={() => setEditName(true)}
+          <button
+            onClick={() => navigate('/')}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '25px',
+              fontSize: '26px',
+              background: 'transparent',
+              border: 'none',
+              cursor: 'pointer',
+              color: '#444',
+              fontWeight: 'bold'
+            }}
           >
-            <input
+            𝗫
+          </button>
+
+          <div style={{ textAlign: "center", marginBottom: "25px" }}>
+            <h1 style={{ fontSize: "28px" }}>Mi Perfil</h1>
+            <p style={{ color: "#777" }}>Gestiona tu información</p>
+          </div>
+
+          {error && (
+            <div style={{
+              background: "#ffe1e1",
+              border: "1px solid #ffb3b3",
+              padding: "10px",
+              borderRadius: "8px",
+              marginBottom: "10px",
+              color: "#b30000"
+            }}>
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div style={{
+              background: "#e6ffe6",
+              border: "1px solid #b3ffb3",
+              padding: "10px",
+              borderRadius: "8px",
+              marginBottom: "10px",
+              color: "#1b7a1b"
+            }}>
+              {success}
+            </div>
+          )}
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
+
+            {/* NOMBRE */}
+            <Card
+              title="Nombre"
+              editing={editName}
               value={name}
-              onChange={e => setName(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc"
-              }}
-              autoFocus
-            />
-            <button
-              onClick={() => {
-                setName(currentUser.name);
-                setEditName(false);
-              }}
-              style={{
-                marginTop: "10px",
-                background: "#ccc",
-                color: "#333",
-                padding: "6px 14px",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer",
-                fontWeight: "600",
-              }}
+              onEditClick={() => setEditName(true)}
             >
-              Cancelar
-            </button>
-          </Card>
+              <input
+                value={name}
+                onChange={e => setName(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc"
+                }}
+                autoFocus
+              />
+              <button
+                onClick={() => {
+                  setName(currentUser.name);
+                  setEditName(false);
+                }}
+                style={{
+                  marginTop: "10px",
+                  background: "#ccc",
+                  color: "#333",
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+              >
+                Cancelar
+              </button>
+            </Card>
 
-          {/* CORREO */}
-          <Card
-            title="Correo"
-            editing={editEmail}
-            value={email}
-            onEditClick={() => setEditEmail(true)}
-          >
-            <input
+            {/* CORREO */}
+            <Card
+              title="Correo"
+              editing={editEmail}
               value={email}
-              onChange={e => setEmail(e.target.value)}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc"
-              }}
-              autoFocus
-            />
-            <button
-              onClick={() => {
-                setEmail(currentUser.email);
-                setEditEmail(false);
-              }}
-              style={{
-                marginTop: "10px",
-                background: "#ccc",
-                color: "#333",
-                padding: "6px 14px",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer",
-                fontWeight: "600",
-              }}
+              onEditClick={() => setEditEmail(true)}
             >
-              Cancelar
-            </button>
-          </Card>
+              <input
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc"
+                }}
+                autoFocus
+              />
+              <button
+                onClick={() => {
+                  setEmail(currentUser.email);
+                  setEditEmail(false);
+                }}
+                style={{
+                  marginTop: "10px",
+                  background: "#ccc",
+                  color: "#333",
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+              >
+                Cancelar
+              </button>
+            </Card>
 
-          {/* CONTRASEÑA */}
-          <Card
-            title="Contraseña"
-            editing={editPassword}
-            value="***********"
-            onEditClick={() => setEditPassword(true)}
+            {/* CONTRASEÑA */}
+            <Card
+              title="Contraseña"
+              editing={editPassword}
+              value="***********"
+              onEditClick={() => setEditPassword(true)}
+            >
+              <input
+                type="password"
+                placeholder="Contraseña actual"
+                ref={currentPassRef}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                  marginBottom: "10px"
+                }}
+              />
+
+              <input
+                type="password"
+                placeholder="Nueva contraseña"
+                ref={newPassRef}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc",
+                  marginBottom: "10px"
+                }}
+              />
+
+              <input
+                type="password"
+                placeholder="Confirmar contraseña"
+                ref={confirmPassRef}
+                style={{
+                  width: "100%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  border: "1px solid #ccc"
+                }}
+              />
+
+              <button
+                onClick={() => {
+                  if (currentPassRef.current) currentPassRef.current.value = "";
+                  if (newPassRef.current) newPassRef.current.value = "";
+                  if (confirmPassRef.current) confirmPassRef.current.value = "";
+                  setEditPassword(false);
+                }}
+                style={{
+                  marginTop: "10px",
+                  background: "#ccc",
+                  color: "#333",
+                  padding: "6px 14px",
+                  borderRadius: "8px",
+                  border: "none",
+                  cursor: "pointer",
+                  fontWeight: "600",
+                }}
+              >
+                Cancelar
+              </button>
+            </Card>
+
+          </div>
+
+          <button
+            onClick={handleSave}
+            style={{
+              marginTop: "25px",
+              width: "100%",
+              padding: "12px 0",
+              borderRadius: "10px",
+              background: "#1b8545",
+              border: "none",
+              color: "white",
+              fontSize: "17px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              transition: "0.2s",
+            }}
           >
-            <input
-              type="password"
-              placeholder="Contraseña actual"
-              ref={currentPassRef}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                marginBottom: "10px"
-              }}
-            />
-
-            <input
-              type="password"
-              placeholder="Nueva contraseña"
-              ref={newPassRef}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc",
-                marginBottom: "10px"
-              }}
-            />
-
-            <input
-              type="password"
-              placeholder="Confirmar contraseña"
-              ref={confirmPassRef}
-              style={{
-                width: "100%",
-                padding: "10px",
-                borderRadius: "8px",
-                border: "1px solid #ccc"
-              }}
-            />
-
-            <button
-              onClick={() => {
-                if (currentPassRef.current) currentPassRef.current.value = "";
-                if (newPassRef.current) newPassRef.current.value = "";
-                if (confirmPassRef.current) confirmPassRef.current.value = "";
-                setEditPassword(false);
-              }}
-              style={{
-                marginTop: "10px",
-                background: "#ccc",
-                color: "#333",
-                padding: "6px 14px",
-                borderRadius: "8px",
-                border: "none",
-                cursor: "pointer",
-                fontWeight: "600",
-              }}
-            >
-              Cancelar
-            </button>
-          </Card>
-
+            Guardar cambios ✓
+          </button>
         </div>
-
-        <button
-          onClick={handleSave}
-          style={{
-            marginTop: "25px",
-            width: "100%",
-            padding: "12px 0",
-            borderRadius: "10px",
-            background: "#1b8545",
-            border: "none",
-            color: "white",
-            fontSize: "17px",
-            fontWeight: "bold",
-            cursor: "pointer",
-            transition: "0.2s",
-          }}
-        >
-          Guardar cambios ✓
-        </button>
       </div>
-    </div>
+    </>
   );
 }
