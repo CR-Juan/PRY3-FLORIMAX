@@ -102,11 +102,9 @@ export function HomePage() {
                 {product.name}
               </div>
 
-              <div className="product-rating-container">
-                <div className="product-rating-stars">⭐⭐⭐⭐⭐</div>
-                <div className="product-rating-count link-primary">
-                  {product.reviews}
-                </div>
+              <div className="product-rating-stars">
+                {"⭐".repeat(Math.round(product.rating)) +
+                "☆".repeat(5 - Math.round(product.rating))}
               </div>
 
               <div className="product-price">
