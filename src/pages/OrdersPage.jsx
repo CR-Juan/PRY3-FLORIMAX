@@ -5,41 +5,49 @@ import { useAuth } from '../context/AuthContext';
 import { orders } from '../data/orders';
 import { users } from '../data/users';
 import { products } from '../data/products';
+import { Alert } from "../components/Alert";
 import './OrdersPage.css';
 
 export function OrdersPage() {
   const { currentUser: user, isLoading } = useAuth();
+
+  const [orderList, setOrderList] = useState(() => {
+    const saved = localStorage.getItem("orders");
+    return saved ? JSON.parse(saved) : orders;
+  });
+
   const [userOrders, setUserOrders] = useState([]);
+  const [alertVisible, setAlertVisible] = useState(false);
+
   const navigate = useNavigate();
 
-  // Validar que el usuario exista y sea tipo "user"
+  useEffect(() => {
+    localStorage.setItem("orders", JSON.stringify(orderList));
+  }, [orderList]);
+
   useEffect(() => {
     if (!isLoading) {
       const validUser = users.find(
         u => u.email === user?.email && u.accountType === "user"
       );
-      if (!user || !validUser) {
-        navigate('/login');
-      }
+      if (!user || !validUser) navigate('/login');
     }
   }, [user, isLoading, navigate]);
 
-  // Filtrar órdenes del usuario
   useEffect(() => {
     if (user) {
       const validUser = users.find(
         u => u.email === user.email && u.accountType === "user"
       );
       if (validUser) {
-        const filteredOrders = orders.filter(
+        const filteredOrders = orderList.filter(
           order => order.userId === validUser.id
         );
         setUserOrders(filteredOrders);
       }
     }
-  }, [user]);
+  }, [user, orderList]);
 
-  // Obtener la imagen del producto según item.id
   const getProductImage = (id) => {
     const product = products.find(p => p.id === id);
     return product ? product.image : '';
@@ -54,10 +62,50 @@ export function OrdersPage() {
     );
   }
 
+  const handleBuyAgain = (item) => {
+    const newOrder = {
+      id: Date.now(),
+      userId: user.id,
+      date: new Date().toISOString().split("T")[0],
+
+      pedidoCreado: true,
+      pendientePago: false,
+      procesado: true,
+      enviado: false,
+      entregado: false,
+
+      items: [
+        {
+          ...item,
+          deliveryDate: new Date(Date.now() + 2 * 86400000)
+            .toISOString()
+            .split("T")[0],
+        },
+      ],
+
+      total: item.price * item.quantity,
+    };
+
+    setOrderList(prev => [...prev, newOrder]);
+    setAlertVisible(true);
+  };
+
   return (
     <>
       <title>FLORIMAX - Mis Pedidos</title>
       <Header />
+
+      {/* ALERTA */}
+      {alertVisible && (
+        <Alert
+          type="success"
+          message="Pedido agregado nuevamente a tus órdenes."
+          autoClose={true}
+          duration={3500}
+          onClose={() => setAlertVisible(false)}
+          className="orders-alert"
+        />
+      )}
 
       <div className="orders-page">
         <div className="page-title">Tus Pedidos</div>
@@ -88,7 +136,6 @@ export function OrdersPage() {
               <div className="order-details-grid">
                 {order.items.map(item => (
                   <>
-                    {/* Imagen */}
                     <div className="product-image-container" key={item.id + '-img'}>
                       <img
                         src={getProductImage(item.id)}
@@ -97,7 +144,6 @@ export function OrdersPage() {
                       />
                     </div>
 
-                    {/* Detalles del producto */}
                     <div className="product-details" key={item.id + '-details'}>
                       <div className="product-name">{item.name}</div>
                       <div className="product-delivery-date">
@@ -106,14 +152,18 @@ export function OrdersPage() {
                       <div className="product-quantity">Cantidad: {item.quantity}</div>
                     </div>
 
-                    {/* Acciones: rastrear + comprar de nuevo debajo */}
                     <div className="product-actions" key={item.id + '-actions'}>
-                      <a href="/tracking">
-                        <button className="track-package-button button-secondary">
-                          Estado del pedido
-                        </button>
-                      </a>
-                      <button className="buy-again-button button-primary">
+                      <button
+                        className="track-package-button button-secondary"
+                        onClick={() => navigate("/tracking", { state: { order } })}
+                      >
+                        Estado del pedido
+                      </button>
+
+                      <button
+                        className="buy-again-button button-primary"
+                        onClick={() => handleBuyAgain(item)}
+                      >
                         <span className="buy-again-icon">🛒</span>
                         <span className="buy-again-message">Comprar de nuevo</span>
                       </button>

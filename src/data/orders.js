@@ -3,6 +3,11 @@ export const orders = [
     id: 'order1',
     userId: '1',
     date: '2025-08-01',
+    pedidoCreado: true,
+    pendientePago: false,
+    procesado: true,
+    enviado: true,
+    entregado: true,
     items: [
       {
         id: 'roses-red-premium',
@@ -18,6 +23,11 @@ export const orders = [
     id: 'order2',
     userId: '1',
     date: '2025-08-05',
+    pedidoCreado: true,
+    pendientePago: false,
+    procesado: true,
+    enviado: true,
+    entregado: true,
     items: [
       {
         id: 'sunflowers-fresh',
@@ -33,6 +43,11 @@ export const orders = [
     id: 'order3',
     userId: '2',
     date: '2025-07-20',
+    pedidoCreado: true,
+    pendientePago: false,
+    procesado: true,
+    enviado: true,
+    entregado: true,
     items: [
       {
         id: 'carnations-pinks',
@@ -48,6 +63,11 @@ export const orders = [
     id: 'order4',
     userId: '2',
     date: '2025-07-25',
+    pedidoCreado: true,
+    pendientePago: false,
+    procesado: true,
+    enviado: true,
+    entregado: true,
     items: [
       {
         id: 'ramo-primaveral',
@@ -70,6 +90,11 @@ export const orders = [
     id: 'order5',
     userId: '1',
     date: '2025-08-10',
+    pedidoCreado: true,
+    pendientePago: false,
+    procesado: true,
+    enviado: true,
+    entregado: true,
     items: [
       {
         id: 'roses-red-premium',

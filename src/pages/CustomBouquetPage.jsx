@@ -16,27 +16,26 @@ export function CustomBouquetPage() {
 
   const showAlert = (message, type = "info") => {
     setAlertData({ message, type });
-
-    setTimeout(() => {
-      setAlertData(null);
-    }, 5000);
+    setTimeout(() => setAlertData(null), 5000);
   };
 
-  // Agregar o actualizar cantidad de flores
   const updateFlowerQuantity = (flowerId, quantity) => {
     if (quantity <= 0) {
       const newFlowers = { ...selectedFlowers };
       delete newFlowers[flowerId];
       setSelectedFlowers(newFlowers);
     } else {
-      setSelectedFlowers({
-        ...selectedFlowers,
-        [flowerId]: quantity
-      });
+      // Límite de 20 flores
+      const totalFlowers = Object.values(selectedFlowers).reduce((sum, qty) => sum + qty, 0);
+      if (totalFlowers + (quantity - (selectedFlowers[flowerId] || 0)) > 20) {
+        showAlert('¡Solo puedes seleccionar hasta 20 flores!', 'warning');
+        return;
+      }
+
+      setSelectedFlowers({ ...selectedFlowers, [flowerId]: quantity });
     }
   };
 
-  // Toggle accesorios
   const toggleAccessory = (accessoryId) => {
     if (selectedAccessories.includes(accessoryId)) {
       setSelectedAccessories(selectedAccessories.filter(id => id !== accessoryId));
@@ -45,35 +44,21 @@ export function CustomBouquetPage() {
     }
   };
 
-  // Calcular total
   const calculateTotal = () => {
     let total = 0;
-
-    // Flores
     Object.keys(selectedFlowers).forEach(flowerId => {
       const flower = availableFlowers.find(f => f.id === flowerId);
-      if (flower) {
-        total += flower.price * selectedFlowers[flowerId];
-      }
+      if (flower) total += flower.price * selectedFlowers[flowerId];
     });
-
-    // Accesorios
     selectedAccessories.forEach(accessoryId => {
       const accessory = availableAccessories.find(a => a.id === accessoryId);
-      if (accessory) {
-        total += accessory.price;
-      }
+      if (accessory) total += accessory.price;
     });
-
     return total.toFixed(2);
   };
 
-  // Contar flores
-  const getTotalFlowers = () => {
-    return Object.values(selectedFlowers).reduce((sum, qty) => sum + qty, 0);
-  };
+  const getTotalFlowers = () => Object.values(selectedFlowers).reduce((sum, qty) => sum + qty, 0);
 
-  // Agregar al carrito
   const handleAddToCart = () => {
     if (getTotalFlowers() === 0) {
       showAlert('Debes seleccionar al menos una flor para tu ramo', 'warning');
@@ -89,7 +74,6 @@ export function CustomBouquetPage() {
     };
 
     addCustomBouquet(bouquetData);
-
     showAlert('¡Ramo agregado al carrito exitosamente!', 'success');
 
     setSelectedFlowers({});
@@ -101,16 +85,9 @@ export function CustomBouquetPage() {
   return (
     <>
       <title>FLORIMAX - Personaliza tu Ramo</title>
-
       <Header />
 
-      {alertData && (
-        <Alert
-          type={alertData.type}
-          message={alertData.message}
-          autoClose={true}
-        />
-      )}
+      {alertData && <Alert type={alertData.type} message={alertData.message} autoClose={true} />}
 
       <div className="custom-bouquet-page">
         <div className="page-header">
@@ -129,37 +106,16 @@ export function CustomBouquetPage() {
               <div className="flowers-grid">
                 {availableFlowers.map(flower => (
                   <div key={flower.id} className="flower-card">
-
-                    <img
-                      src={flower.image}
-                      alt={flower.name}
-                      className="flower-image"
-                    />
-
+                    <img src={flower.image} alt={flower.name} className="flower-image" />
                     <div className="flower-info">
                       <div className="flower-name">{flower.name}</div>
                       <div className="flower-description">{flower.description}</div>
                       <div className="flower-price">₡{flower.price.toFixed(2)} c/u</div>
                     </div>
-
                     <div className="flower-controls">
-                      <button
-                        className="qty-button"
-                        onClick={() => updateFlowerQuantity(flower.id, (selectedFlowers[flower.id] || 0) - 1)}
-                      >
-                        -
-                      </button>
-
-                      <span className="qty-display">
-                        {selectedFlowers[flower.id] || 0}
-                      </span>
-
-                      <button
-                        className="qty-button"
-                        onClick={() => updateFlowerQuantity(flower.id, (selectedFlowers[flower.id] || 0) + 1)}
-                      >
-                        +
-                      </button>
+                      <button className="qty-button" onClick={() => updateFlowerQuantity(flower.id, (selectedFlowers[flower.id] || 0) - 1)}>-</button>
+                      <span className="qty-display">{selectedFlowers[flower.id] || 0}</span>
+                      <button className="qty-button" onClick={() => updateFlowerQuantity(flower.id, (selectedFlowers[flower.id] || 0) + 1)}>+</button>
                     </div>
                   </div>
                 ))}
@@ -169,30 +125,16 @@ export function CustomBouquetPage() {
             {/* ACCESORIOS */}
             <div className="section">
               <h2 className="section-title">Agrega Accesorios</h2>
-
               <div className="accessories-grid">
                 {availableAccessories.map(accessory => (
-                  <div
-                    key={accessory.id}
-                    className={`accessory-card ${selectedAccessories.includes(accessory.id) ? 'selected' : ''}`}
-                    onClick={() => toggleAccessory(accessory.id)}
-                  >
-
-                    <img
-                      src={accessory.image}
-                      alt={accessory.name}
-                      className="accessory-image"
-                    />
-
+                  <div key={accessory.id} className={`accessory-card ${selectedAccessories.includes(accessory.id) ? 'selected' : ''}`} onClick={() => toggleAccessory(accessory.id)}>
+                    <img src={accessory.image} alt={accessory.name} className="accessory-image" />
                     <div className="accessory-info">
                       <div className="accessory-name">{accessory.name}</div>
                       <div className="accessory-description">{accessory.description}</div>
                       <div className="accessory-price">₡{accessory.price.toFixed(2)}</div>
                     </div>
-
-                    {selectedAccessories.includes(accessory.id) && (
-                      <div className="selected-badge">✓</div>
-                    )}
+                    {selectedAccessories.includes(accessory.id) && <div className="selected-badge">✓</div>}
                   </div>
                 ))}
               </div>
@@ -201,31 +143,18 @@ export function CustomBouquetPage() {
             {/* PERSONALIZACIÓN */}
             <div className="section">
               <h2 className="section-title">Personalización</h2>
-
               <div className="personalization-form">
                 <div className="form-group">
                   <label>Nombre del Ramo (opcional)</label>
-                  <input
-                    type="text"
-                    placeholder='Ej: "Ramo de Aniversario"'
-                    value={bouquetName}
-                    onChange={(e) => setBouquetName(e.target.value)}
-                    maxLength={50}
-                  />
+                  <input type="text" placeholder='Ej: "Ramo de Aniversario"' value={bouquetName} onChange={(e) => setBouquetName(e.target.value)} maxLength={50} />
                 </div>
-
                 <div className="form-group">
                   <label>Mensaje Personalizado (opcional)</label>
-                  <textarea
-                    placeholder='Ej: "Feliz cumpleaños", "Te amo mamá"'
-                    value={personalMessage}
-                    onChange={(e) => setPersonalMessage(e.target.value)}
-                    maxLength={200}
-                    rows={4}
-                  />
+                  <textarea placeholder='Ej: "Feliz cumpleaños", "Te amo mamá"' value={personalMessage} onChange={(e) => setPersonalMessage(e.target.value)} maxLength={200} rows={4} />
                 </div>
               </div>
             </div>
+
           </div>
 
           {/* PANEL DERECHO - PREVIEW */}
@@ -244,109 +173,109 @@ export function CustomBouquetPage() {
                     {/* === CANVAS DEL RAMO === */}
                     {getTotalFlowers() > 0 && (
                       <div className="bouquet-visualization-canvas">
+                        
+                        <div className="bouquet-wrap" style={{
+                          position: "absolute",
+                          bottom: 40,  //Para subirlo o bajarlp
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "140px",
+                          height: "160px",
+                          background: "linear-gradient(to bottom, #f5e6dc, #e0c4b0)",
+                          borderRadius: "60px 60px 10px 10px",
+                          clipPath: "polygon(0 0, 100% 0, 80% 100%, 20% 100%)",
+                          zIndex: 50,
+                          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                        }} />
 
-                        {/* === FLORES (RAMO COMPACTO) === */}
-                        <div className="bouquet-flowers-cluster">
-                          {(() => {
-                            const flowerElements = [];
-                            const total = getTotalFlowers();
-                            if (total === 0) return [];
-
-                            const centerY = 55;
-
-                            // 🔥 Radio dinámico: más flores → ramo más abierto
-                            const minRadius = 65;
-                            const radius = minRadius + total * 4; 
-                            // Ej: 5 flores = 85px | 20 flores = 145px
-
-                            // Construir lista lineal de flores
-                            const flatFlowers = [];
-                            Object.keys(selectedFlowers).forEach(flowerId => {
-                              const flower = availableFlowers.find(f => f.id === flowerId);
-                              const quantity = selectedFlowers[flowerId];
-                              for (let i = 0; i < quantity; i++) flatFlowers.push(flower);
-                            });
-
-                            // Ángulos del semicírculo (primer + segundo cuadrante)
-                            const maxAngle = Math.PI / 2;   // +90°
-                            const minAngle = -Math.PI / 2;  // -90°
-
-                            // PRIMERA flor al centro (0°)
-                            const angles = [0];
-
-                            const remaining = total - 1;
-
-                            if (remaining > 0) {
-                              // 🔥 Más flores → más separación angular
-                              const angleStep = (maxAngle - minAngle) / (remaining + 1);
-
-                              for (let i = 1; i <= remaining; i++) {
-                                const angle = maxAngle - angleStep * i;
-
-                                // Alternar izquierda/derecha para simetría perfecta
-                                angles.push(i % 2 === 0 ? angle : -angle);
-                              }
+                        {/* FLORES (hasta 20) */}
+                        {(() => {
+                          const flowerElements = [];
+                          const flatFlowers = [];
+                          let flowerCount = 0;
+                          Object.keys(selectedFlowers).sort().forEach(flowerId => {
+                            const flower = availableFlowers.find(f => f.id === flowerId);
+                            const quantity = selectedFlowers[flowerId];
+                            for (let i = 0; i < quantity && flowerCount < 20; i++) {
+                              flatFlowers.push(flower);
+                              flowerCount++;
                             }
+                          });
 
-                            // Renderizar flores
-                            flatFlowers.forEach((flower, index) => {
-                              const angle = angles[index];
+                          const layers = [4, 6, 5, 5];
+                          const baseY = 60;
+                          const layerSpacing = 40;
+                          const horizontalSpacing = 5.5;
+                          let flowerIndex = 0;
 
-                              const x = Math.cos(angle) * radius;
-                              const y = Math.sin(angle) * radius * 0.45;
+                          layers.forEach((count, layerIdx) => {
+                            const layerY = baseY + layerIdx * layerSpacing;
+                            const totalWidth = (count - 1) * horizontalSpacing;
+                            const startX = 50 - totalWidth / 2;
 
-                              const rotation = angle * (180 / Math.PI);
+                            for (let i = count - 1; i >= 0; i--) {
+                              if (flowerIndex >= flatFlowers.length) break;
+                              const flower = flatFlowers[flowerIndex];
+                              const x = startX + i * horizontalSpacing;
+                              const offset = i - (count - 1) / 2;
+                              const curveY = layerY - Math.pow(offset, 2) * 1.8;
 
                               flowerElements.push(
-                                <img
-                                  key={`${flower.id}-${index}`}
-                                  src={flower.image}
-                                  className="bouquet-flower-image"
+                                <img key={`${flower.id}-${flowerIndex}`} src={flower.image} className="bouquet-flower-image"
                                   style={{
                                     position: "absolute",
-                                    left: `calc(50% + ${x}px)`,
-                                    top: `calc(${centerY + y}px)`,
-                                    width: "65px",
-                                    transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
-                                    zIndex: 200 - index,
-                                    filter: "drop-shadow(1.5px 1.5px 3px rgba(0,0,0,0.25))",
+                                    left: `calc(${x}%)`,
+                                    top: `${curveY}px`,
+                                    width: "50px",
+                                    transform: `translate(-50%, -50%) rotate(${Math.random() * 14 - 7}deg)`,
+                                    zIndex: 100 + flowerIndex,
+                                    filter: "drop-shadow(1.5px 1.5px 3px rgba(0,0,0,0.25))"
                                   }}
                                 />
                               );
-                            });
+                              flowerIndex++;
+                            }
+                          });
 
-                            return flowerElements;
-                          })()}
+                          return flowerElements;
+                        })()}
 
+                        <div
+                          className="bouquet-wrap-front"
+                          style={{
+                            position: "absolute",
+                            bottom: -20,
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "140px",
+                            height: "160px",
+                            background: "linear-gradient(to bottom, #f5e6dc, #e0c4b0)",
+                            borderRadius: "60px 60px 10px 10px",
+                            clipPath: `polygon(0% 0%, 100% 0%, ${80}% 100%, ${20}% 100%)`,
+                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
+                            zIndex: 500,
+                          }}
+                        />
 
-
-                        </div>
-
-                        {/* ACCESORIOS (envoltorio y cinta) */}
+                        {/* ACCESORIOS */}
                         {selectedAccessories.map(accessoryId => {
                           const accessory = availableAccessories.find(a => a.id === accessoryId);
                           if (!accessory) return null;
-
                           const isWrap = accessory.name.includes("Papel");
                           const isBow = accessory.name.includes("Cinta");
-
                           return (
-                            <img
-                              key={accessory.id}
-                              src={accessory.image}
-                              alt=""
-                              className="bouquet-accessory-image"
+                            <img key={accessory.id} src={accessory.image} alt="" className="bouquet-accessory-image"
                               style={{
                                 position: "absolute",
                                 bottom: isWrap ? 0 : "10%",
                                 left: "50%",
                                 transform: "translateX(-50%)",
-                                width: isWrap ? "100%" : "80px",
-                                zIndex: isWrap ? 1 : 300,
-                                opacity: isWrap ? 0.9 : 1,
+                                width: isWrap ? "140px" : "80px",
+                                zIndex: isWrap ? 30 : 300,
+                                opacity: isWrap ? 0.9 : 1
                               }}
                             />
-                          );
+                          )
                         })}
                       </div>
                     )}
@@ -360,17 +289,11 @@ export function CustomBouquetPage() {
                             const accessory = availableAccessories.find(a => a.id === accessoryId);
                             return (
                               <div key={accessoryId} className="preview-item">
-                                <img
-                                  src={accessory.image}
-                                  alt={accessory.name}
-                                  className="preview-image"
-                                />
+                                <img src={accessory.image} alt={accessory.name} className="preview-image" />
                                 <span className="preview-text">{accessory.name}</span>
-                                <span className="preview-price">
-                                  ₡{accessory.price.toFixed(2)}
-                                </span>
+                                <span className="preview-price">₡{accessory.price.toFixed(2)}</span>
                               </div>
-                            );
+                            )
                           })}
                         </div>
                       </div>
@@ -380,16 +303,8 @@ export function CustomBouquetPage() {
                     {(bouquetName || personalMessage) && (
                       <div className="preview-section">
                         <h3>Personalización</h3>
-                        {bouquetName && (
-                          <div className="preview-detail">
-                            <strong>Nombre:</strong> {bouquetName}
-                          </div>
-                        )}
-                        {personalMessage && (
-                          <div className="preview-detail">
-                            <strong>Mensaje:</strong> {personalMessage}
-                          </div>
-                        )}
+                        {bouquetName && <div className="preview-detail"><strong>Nombre:</strong> {bouquetName}</div>}
+                        {personalMessage && <div className="preview-detail"><strong>Mensaje:</strong> {personalMessage}</div>}
                       </div>
                     )}
                   </>
@@ -402,15 +317,8 @@ export function CustomBouquetPage() {
                   <span>Total:</span>
                   <span className="price-amount">₡{calculateTotal()}</span>
                 </div>
-
-                <button
-                  className="add-to-cart-button button-primary"
-                  disabled={getTotalFlowers() === 0}
-                  onClick={handleAddToCart}
-                >
-                  {getTotalFlowers() === 0
-                    ? "Selecciona flores"
-                    : "Agregar al Carrito"}
+                <button className="add-to-cart-button button-primary" disabled={getTotalFlowers() === 0} onClick={handleAddToCart}>
+                  {getTotalFlowers() === 0 ? "Selecciona flores" : "Agregar al Carrito"}
                 </button>
               </div>
             </div>
