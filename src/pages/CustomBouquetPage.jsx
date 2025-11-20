@@ -170,29 +170,17 @@ export function CustomBouquetPage() {
                   </div>
                 ) : (
                   <>
-                    {/* === CANVAS DEL RAMO === */}
+                    {/* === CANVAS DEL RAMO COMPLETAMENTE REDISEÑADO === */}
                     {getTotalFlowers() > 0 && (
                       <div className="bouquet-visualization-canvas">
                         
-                        <div className="bouquet-wrap" style={{
-                          position: "absolute",
-                          bottom: 40,  //Para subirlo o bajarlp
-                          left: "50%",
-                          transform: "translateX(-50%)",
-                          width: "140px",
-                          height: "160px",
-                          background: "linear-gradient(to bottom, #f5e6dc, #e0c4b0)",
-                          borderRadius: "60px 60px 10px 10px",
-                          clipPath: "polygon(0 0, 100% 0, 80% 100%, 20% 100%)",
-                          zIndex: 50,
-                          boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                        }} />
-
-                        {/* FLORES (hasta 20) */}
+                        {/* FLORES AGRUPADAS VERTICALMENTE */}
                         {(() => {
                           const flowerElements = [];
                           const flatFlowers = [];
                           let flowerCount = 0;
+                          
+                          // Recopilar flores
                           Object.keys(selectedFlowers).sort().forEach(flowerId => {
                             const flower = availableFlowers.find(f => f.id === flowerId);
                             const quantity = selectedFlowers[flowerId];
@@ -202,37 +190,84 @@ export function CustomBouquetPage() {
                             }
                           });
 
-                          const layers = [4, 6, 5, 5];
-                          const baseY = 60;
-                          const layerSpacing = 40;
-                          const horizontalSpacing = 5.5;
+                          const totalFlowers = flatFlowers.length;
+                          const centerX = 50;
+                          
+                          // Definir capas verticales MÁS ABIERTAS (estilo abanico)
+                          const layers = [
+                            { y: 28, count: Math.min(4, totalFlowers), spread: 28 },      // Capa trasera más abierta
+                            { y: 35, count: Math.min(5, totalFlowers - 4), spread: 32 },  // Capa media-trasera
+                            { y: 42, count: Math.min(6, totalFlowers - 9), spread: 35 },  // Capa media
+                            { y: 50, count: Math.min(5, totalFlowers - 15), spread: 30 }  // Capa frontal
+                          ];
+
                           let flowerIndex = 0;
 
-                          layers.forEach((count, layerIdx) => {
-                            const layerY = baseY + layerIdx * layerSpacing;
-                            const totalWidth = (count - 1) * horizontalSpacing;
-                            const startX = 50 - totalWidth / 2;
-
-                            for (let i = count - 1; i >= 0; i--) {
+                          layers.forEach((layer, layerIdx) => {
+                            const flowersInLayer = Math.min(layer.count, totalFlowers - flowerIndex);
+                            
+                            for (let i = 0; i < flowersInLayer; i++) {
                               if (flowerIndex >= flatFlowers.length) break;
+                              
                               const flower = flatFlowers[flowerIndex];
-                              const x = startX + i * horizontalSpacing;
-                              const offset = i - (count - 1) / 2;
-                              const curveY = layerY - Math.pow(offset, 2) * 1.8;
-
+                              
+                              // Distribución horizontal dentro de la capa
+                              const spread = layer.spread;
+                              const step = flowersInLayer > 1 ? spread / (flowersInLayer - 1) : 0;
+                              const x = centerX - (spread / 2) + (step * i);
+                              
+                              // EFECTO ABANICO: Las flores del centro más arriba
+                              const distanceFromCenter = Math.abs(x - centerX); // Distancia del centro
+                              const maxDistance = spread / 2;
+                              const curveAmount = 8; // Qué tan pronunciada es la curva (ajustable)
+                              const curveFactor = (distanceFromCenter / maxDistance); // 0 en centro, 1 en extremos
+                              const curveOffset = Math.pow(curveFactor, 2) * curveAmount; // Curva parabólica
+                              
+                              // Pequeña variación aleatoria
+                              const offsetX = (Math.random() - 0.5) * 4;
+                              const offsetY = (Math.random() - 0.5) * 3;
+                              
+                              // Ajustar Y con la curva (las de los lados bajan más)
+                              const adjustedY = layer.y + curveOffset;
+                              
+                              // Rotación suave
+                              const rotation = (Math.random() - 0.5) * 15;
+                              
+                              // Tamaño aumentado
+                              const size = 85 + (layerIdx * 5); // Más grandes adelante
+                              
+                              // Z-index por capa
+                              const zIndex = 100 + (layerIdx * 50) + i;
+                              
                               flowerElements.push(
-                                <img key={`${flower.id}-${flowerIndex}`} src={flower.image} className="bouquet-flower-image"
+                                <div
+                                  key={`${flower.id}-${flowerIndex}`}
                                   style={{
                                     position: "absolute",
-                                    left: `calc(${x}%)`,
-                                    top: `${curveY}px`,
-                                    width: "50px",
-                                    transform: `translate(-50%, -50%) rotate(${Math.random() * 14 - 7}deg)`,
-                                    zIndex: 100 + flowerIndex,
-                                    filter: "drop-shadow(1.5px 1.5px 3px rgba(0,0,0,0.25))"
+                                    left: `${x + offsetX}%`,
+                                    top: `${adjustedY + offsetY}%`,
+                                    transform: `translate(-50%, -50%) rotate(${rotation}deg)`,
+                                    zIndex: zIndex,
+                                    width: `${size}px`,
+                                    height: `${size}px`,
+                                    overflow: "hidden"
                                   }}
-                                />
+                                >
+                                  <img 
+                                    src={flower.image}
+                                    alt={flower.name}
+                                    style={{
+                                      width: "100%",
+                                      height: "auto",
+                                      display: "block",
+                                      objectFit: "cover",
+                                      objectPosition: "center 20%", // Mostrar solo la parte superior
+                                      filter: "drop-shadow(3px 4px 6px rgba(0,0,0,0.35))"
+                                    }}
+                                  />
+                                </div>
                               );
+                              
                               flowerIndex++;
                             }
                           });
@@ -240,42 +275,68 @@ export function CustomBouquetPage() {
                           return flowerElements;
                         })()}
 
-                        <div
-                          className="bouquet-wrap-front"
-                          style={{
+                        {/* ENVOLTORIO MEJORADO - MÁS BAJO */}
+                        <div style={{
+                          position: "absolute",
+                          bottom: "0",
+                          left: "50%",
+                          transform: "translateX(-50%)",
+                          width: "200px",
+                          height: "180px",
+                          zIndex: 300
+                        }}>
+                          {/* Parte trasera */}
+                          <div style={{
                             position: "absolute",
-                            bottom: -20,
+                            bottom: "35px",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            width: "140px",
-                            height: "160px",
-                            background: "linear-gradient(to bottom, #f5e6dc, #e0c4b0)",
-                            borderRadius: "60px 60px 10px 10px",
-                            clipPath: `polygon(0% 0%, 100% 0%, ${80}% 100%, ${20}% 100%)`,
-                            boxShadow: "0 4px 8px rgba(0,0,0,0.2)",
-                            zIndex: 500,
-                          }}
-                        />
+                            width: "180px",
+                            height: "130px",
+                            background: "linear-gradient(to bottom, #f5e6dc 0%, #e8d5c4 40%, #d4bca8 100%)",
+                            borderRadius: "90px 90px 20px 20px",
+                            clipPath: "polygon(8% 0%, 92% 0%, 78% 100%, 22% 100%)",
+                            boxShadow: "0 4px 12px rgba(0,0,0,0.2), inset -3px 0 8px rgba(0,0,0,0.1)",
+                            zIndex: 50
+                          }} />
+                          
+                          {/* Parte frontal - MÁS BAJA */}
+                          <div style={{
+                            position: "absolute",
+                            bottom: "0",
+                            left: "50%",
+                            transform: "translateX(-50%)",
+                            width: "180px",
+                            height: "100px",
+                            background: "linear-gradient(to bottom, #f5e6dc 0%, #e8d5c4 60%, #d4bca8 100%)",
+                            borderRadius: "90px 90px 20px 20px",
+                            clipPath: "polygon(8% 0%, 92% 0%, 78% 100%, 22% 100%)",
+                            boxShadow: "0 6px 16px rgba(0,0,0,0.25), inset 3px 0 8px rgba(0,0,0,0.1)",
+                            zIndex: 500
+                          }} />
+                        </div>
 
-                        {/* ACCESORIOS */}
+                        {/* ACCESORIOS (LAZOS) */}
                         {selectedAccessories.map(accessoryId => {
                           const accessory = availableAccessories.find(a => a.id === accessoryId);
                           if (!accessory) return null;
-                          const isWrap = accessory.name.includes("Papel");
-                          const isBow = accessory.name.includes("Cinta");
+                          
                           return (
-                            <img key={accessory.id} src={accessory.image} alt="" className="bouquet-accessory-image"
+                            <img 
+                              key={accessory.id}
+                              src={accessory.image}
+                              alt={accessory.name}
                               style={{
                                 position: "absolute",
-                                bottom: isWrap ? 0 : "10%",
+                                bottom: "22%",
                                 left: "50%",
                                 transform: "translateX(-50%)",
-                                width: isWrap ? "140px" : "80px",
-                                zIndex: isWrap ? 30 : 300,
-                                opacity: isWrap ? 0.9 : 1
+                                width: "120px",
+                                zIndex: 600,
+                                filter: "drop-shadow(2px 2px 4px rgba(0,0,0,0.3))"
                               }}
                             />
-                          )
+                          );
                         })}
                       </div>
                     )}
