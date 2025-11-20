@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCart } from '../context/CartContext';
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+import { Alert } from "../components/Alert";
 import './checkout-header.css';
 import './CheckoutPage.css';
 
@@ -12,10 +15,25 @@ export function CheckoutPage() {
     getShippingCost,
     getTax,
     getFinalTotal,
-    getTotalItems
+    getTotalItems,
+    clearCart
   } = useCart();
 
-  //Para las fechas
+  const { currentUser: user } = useAuth();
+
+  const navigate = useNavigate();
+
+  const [orderList, setOrderList] = useState(() => {
+    const saved = localStorage.getItem("orders");
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem("orders", JSON.stringify(orderList));
+  }, [orderList]);
+
+  const [alertVisible, setAlertVisible] = useState(false);
+
   const formatDateES = (date) => {
     const days = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
     const months = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -31,16 +49,60 @@ export function CheckoutPage() {
 
   const [selectedDelivery, setSelectedDelivery] = useState(
     cartItems.reduce((acc, item) => {
-      acc[item.id] = "standard"; // por defecto envío estándar
+      acc[item.id] = "standard";
       return acc;
     }, {})
   );
+
+  const handlePlaceOrder = () => {
+    if (cartItems.length === 0) return;
+
+    const newOrder = {
+      id: Date.now(),
+      userId: user?.id,
+      date: new Date().toISOString().split("T")[0],
+
+      pedidoCreado: true,
+      pendientePago: false,
+      procesado: true,
+      enviado: false,
+      entregado: false,
+
+      items: cartItems.map(item => ({
+        ...item,
+        deliveryDate:
+          selectedDelivery[item.id] === "express"
+            ? today.toISOString().split("T")[0]
+            : tomorrow.toISOString().split("T")[0],
+      })),
+
+      total: getFinalTotal()
+    };
+
+    setOrderList(prev => [...prev, newOrder]);
+    setAlertVisible(true);
+
+    setTimeout(() => {
+      clearCart();
+      navigate("/orders");
+    }, 1800);
+  };
 
   return (
     <>
       <title>FLORIMAX - Checkout</title>
 
-      {/* Header especial para checkout */}
+      {/* ALERTA */}
+      {alertVisible && (
+        <Alert
+          type="success"
+          message="¡Tu pedido ha sido creado exitosamente!"
+          autoClose={true}
+          duration={1500}
+          onClose={() => setAlertVisible(false)}
+        />
+      )}
+
       <div className="checkout-header">
         <div className="header-content">
           <div className="checkout-header-left-section">
@@ -64,6 +126,7 @@ export function CheckoutPage() {
       <div className="checkout-page">
         <div className="page-title">Revisa tu pedido</div>
 
+        {/* Carrito vacío */}
         {cartItems.length === 0 ? (
           <div className="empty-cart">
             <div className="empty-cart-icon">🛒</div>
@@ -77,10 +140,14 @@ export function CheckoutPage() {
           </div>
         ) : (
           <div className="checkout-grid">
+
+            {/* Lista de productos */}
             <div className="order-summary">
               {cartItems.map((item) => {
-                // Fecha dinámica según la opción seleccionada
-                const deliveryDate = selectedDelivery[item.id] === "express" ? todayFormatted : tomorrowFormatted;
+                const deliveryDate =
+                  selectedDelivery[item.id] === "express"
+                    ? todayFormatted
+                    : tomorrowFormatted;
 
                 return (
                   <div key={item.id} className="cart-item-container">
@@ -100,21 +167,21 @@ export function CheckoutPage() {
                       <div className="cart-item-details">
                         <div className="product-name">{item.name}</div>
                         <div className="product-price">₡{item.price.toFixed(2)}</div>
+
+                        {/* ComboBox */}
                         <div className="product-quantity">
-                          <span>
-                            Cantidad: <span className="quantity-label">{item.quantity}</span>
-                          </span>
-                          <span 
-                            className="update-quantity-link link-primary"
-                            onClick={() => {
-                              const newQty = prompt('Nueva cantidad:', item.quantity);
-                              if (newQty && !isNaN(newQty)) {
-                                updateQuantity(item.id, parseInt(newQty));
-                              }
-                            }}
+                          <span>Cantidad:</span>
+
+                          <select
+                            className="quantity-select"
+                            value={item.quantity}
+                            onChange={(e) => updateQuantity(item.id, Number(e.target.value))}
                           >
-                            Actualizar
-                          </span>
+                            {[1, 2, 3, 4, 5].map((num) => (
+                              <option key={num} value={num}>{num}</option>
+                            ))}
+                          </select>
+
                           <span 
                             className="delete-quantity-link link-primary"
                             onClick={() => removeFromCart(item.id)}
@@ -124,22 +191,21 @@ export function CheckoutPage() {
                         </div>
                       </div>
 
+                      {/* Opciones de envío */}
                       <div className="delivery-options">
                         <div className="delivery-options-title">
                           Elige una opción de entrega:
                         </div>
 
-                        {/* Envío estándar */}
                         <div className="delivery-option">
                           <input
                             type="radio"
                             className="delivery-option-input"
                             name={`delivery-option-${item.id}`}
                             checked={selectedDelivery[item.id] === "standard"}
-                            onChange={() => setSelectedDelivery(prev => ({
-                              ...prev,
-                              [item.id]: "standard"
-                            }))}
+                            onChange={() =>
+                              setSelectedDelivery((prev) => ({ ...prev, [item.id]: "standard" }))
+                            }
                           />
                           <div>
                             <div className="delivery-option-date">{tomorrowFormatted}</div>
@@ -147,17 +213,15 @@ export function CheckoutPage() {
                           </div>
                         </div>
 
-                        {/* Envío Express */}
                         <div className="delivery-option">
                           <input
                             type="radio"
                             className="delivery-option-input"
                             name={`delivery-option-${item.id}`}
                             checked={selectedDelivery[item.id] === "express"}
-                            onChange={() => setSelectedDelivery(prev => ({
-                              ...prev,
-                              [item.id]: "express"
-                            }))}
+                            onChange={() =>
+                              setSelectedDelivery((prev) => ({ ...prev, [item.id]: "express" }))
+                            }
                           />
                           <div>
                             <div className="delivery-option-date">{todayFormatted}</div>
@@ -168,7 +232,7 @@ export function CheckoutPage() {
                       </div>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
 
@@ -205,7 +269,12 @@ export function CheckoutPage() {
                 <div className="payment-summary-money">₡{getFinalTotal().toFixed(2)}</div>
               </div>
 
-              <button className="place-order-button button-primary">Realizar Pedido</button>
+              <button 
+                className="place-order-button button-primary"
+                onClick={handlePlaceOrder}
+              >
+                Realizar Pedido
+              </button>
             </div>
           </div>
         )}

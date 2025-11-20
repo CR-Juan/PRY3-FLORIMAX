@@ -123,7 +123,7 @@ export function AuthProvider({ children }) {
     localStorage.removeItem('florimax_user');
   };
 
-  // 🔹 Actualizar datos del usuario (EDIT PROFILE)
+  // Actualizar datos del usuario (EDIT PROFILE)
   const updateUser = (updatedData) => {
     if (!currentUser) return;
 
@@ -157,7 +157,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     isAuthenticated,
-    updateUser, // 👈 agregado aquí
+    updateUser, 
   };
 
   return (
